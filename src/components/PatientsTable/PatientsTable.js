@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Table } from 'reactabular';
+import findIndex from 'lodash.findindex';
 import './PatientsTable.css';
 
 export default class PatientsTable extends Component {
@@ -33,8 +34,20 @@ export default class PatientsTable extends Component {
           },
         },
         {
+          cell: (value, cellData, rowIndex) => {
+            const { deletePatient } = this.props;
 
-        }
+            return {
+              value: (
+                <span>
+                  <span className="remove" onClick={deletePatient.bind(this, cellData[rowIndex]._id)}>
+                    &#10007;
+                  </span>
+                </span>
+              ),
+            };
+          },
+        },
       ],
     };
   }
@@ -55,5 +68,6 @@ export default class PatientsTable extends Component {
 
 PatientsTable.propTypes = {
   fetchPatients: PropTypes.func.isRequired,
+  deletePatient: PropTypes.func.isRequired,
   patients: PropTypes.any.isRequired,
 };
