@@ -10,6 +10,7 @@
 import 'babel-core/polyfill';
 import path from 'path';
 import Express from 'express';
+import bodyParser from 'body-parser';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -18,15 +19,17 @@ import {ReduxRouter} from 'redux-router';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 
-import { fetchCounter } from './api';
 import configureStore from './store';
-
-import './api/db';
 
 import { SERVER_PORT, SERVER_RENDERING } from './config';
 
+import patientsAPI from './api/patients';
+
 const app = global.server = new Express();
 const port = SERVER_PORT;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 /**
  * Render the "index.html"
@@ -62,14 +65,14 @@ async function handleRender(req, res, next) {
     // `fetchCounter` is a fake API described in `./api/counter.js`.
     // The first thing to do before rendering the app is to ask the API for
     // the initial counter value.
-    let counter;
-    try {
-      counter = await fetchCounter();
-    } catch (err) {
-      console.log(`${err.message}: Initializing a new counter`); // eslint-disable-line no-console
-    } finally {
-      counter = counter || 0;
-    }
+    const counter = 0;
+    // try {
+    //   counter = await fetchCounter();
+    // } catch (err) {
+    //   console.log(`${err.message}: Initializing a new counter`); // eslint-disable-line no-console
+    // } finally {
+    //   counter = counter || 0;
+    // }
 
     // The server must have a reference to the redux application store.
     // Let's create it. Notice that we pass to it `reduxReactRouter` and
@@ -111,6 +114,7 @@ async function handleRender(req, res, next) {
 
 app.set('port', (process.env.PORT || port));
 app.use('/client', Express.static(path.join(__dirname, './client')));
+app.use('/api/patients', patientsAPI);
 if (SERVER_RENDERING) {
   app.use(handleRender);
 } else {
