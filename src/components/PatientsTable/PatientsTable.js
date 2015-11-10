@@ -9,12 +9,32 @@ export default class PatientsTable extends Component {
       columns: [
         {
           property: 'firstName',
-          header: 'First Name',
+          header: 'Prenom',
         },
         {
           property: 'lastName',
-          header: 'Last Name',
+          header: 'Nom de famille',
         },
+        {
+          property: 'diapers',
+          header: 'Couche',
+          cell: (value) => {
+            return (
+              <ul>
+                {value.map((diaper, index) => {
+                  return (
+                    <li key={index}>
+                      <span>{diaper.type}</span>: <span>{diaper.amount}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            );
+          },
+        },
+        {
+
+        }
       ],
     };
   }

@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
     const patients = await db.getPatients();
     res.json(patients);
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 });
 
@@ -18,7 +18,7 @@ router.post('/', async (req, res, next) => {
     const patient = await db.createPatient(req.body);
     res.json(patient);
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 });
 
@@ -45,7 +45,7 @@ router.put('/:id', async (req, res, next) => {
       res.json(patient);
     }
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 });
 
@@ -58,7 +58,7 @@ router.delete('/:id', async (req, res, next) => {
       res.json(patient);
     }
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 });
 

@@ -2,7 +2,23 @@ import { join } from 'path';
 import webpack from 'webpack';
 import MutliProgress from 'multi-progress';
 
-const multi = new MutliProgress();
+const IS_WIN = /^win/.test(process.platform);
+let multi;
+let clientBar;
+let serverBar;
+
+if (!IS_WIN) {
+  multi = new MutliProgress();
+  clientBar = multi.newBar('Client [:bar] :percent :elapsed s', {
+    total: 100,
+    clear: true,
+  });
+  serverBar = multi.newBar('Server [:bar] :percent :elapsed s', {
+    total: 100,
+    clear: true,
+  });
+}
+
 const DEBUG = !process.argv.includes('release'); // By default, we are in DEBUG mode. To exit from DEBUG mode, launch the npm task with ``-- release` at the end. Eg. `npm start -- release`
 const VERBOSE = process.argv.includes('verbose'); // By default, we are NOT in VERBOSE mode. You can activate this option by running for instance `npm start -- verbose`.
 const WATCH = process.argv.includes('serve'); // Define in `./tools/start.js`
@@ -82,11 +98,6 @@ const commonConfig = {
   },
 };
 
-const clientBar = multi.newBar('Client [:bar] :percent :elapsed s', {
-  total: 100,
-  clear: true,
-});
-
 // Client specific config. We merge the new config with the common config.
 const appConfig = Object.assign({}, commonConfig, {
   devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
@@ -115,9 +126,11 @@ const appConfig = Object.assign({}, commonConfig, {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
     ] : []),
-    new webpack.ProgressPlugin((percentage) => {
-      clientBar.update(percentage);
-    }),
+    ...(!IS_WIN ? [
+      new webpack.ProgressPlugin((percentage) => {
+        clientBar.update(percentage);
+      }),
+    ] : []),
   ],
   module: {
     loaders: [
@@ -149,11 +162,6 @@ const appConfig = Object.assign({}, commonConfig, {
   },
 });
 
-const serverBar = multi.newBar('Server [:bar] :percent :elapsed s', {
-  total: 100,
-  clear: true,
-});
-
 // Server specific config. We merge the new config with the common config.
 const serverConfig = Object.assign({}, commonConfig, {
   devtool: 'source-map',
@@ -179,9 +187,11 @@ const serverConfig = Object.assign({}, commonConfig, {
     new webpack.DefinePlugin(GLOBALS),
     new webpack.BannerPlugin('require("source-map-support").install();',
       { raw: true, entryOnly: false }),
-    new webpack.ProgressPlugin((percentage) => {
-      serverBar.update(percentage);
-    }),
+    ...(!IS_WIN ? [
+      new webpack.ProgressPlugin((percentage) => {
+        serverBar.update(percentage);
+      }),
+    ] : []),
   ],
   module: {
     loaders: [
