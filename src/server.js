@@ -21,7 +21,7 @@ import { Provider } from 'react-redux';
 import { fetchCounter } from './api';
 import configureStore from './store';
 
-// import './api/db';
+import './api/db';
 
 import { SERVER_PORT, SERVER_RENDERING } from './config';
 
