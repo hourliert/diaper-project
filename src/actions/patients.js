@@ -1,23 +1,23 @@
 import fetch from 'isomorphic-fetch';
 
-export const REQUEST_PATIENTS = 'REQUEST_PATIENTS';
+export const FETCH_PATIENTS_REQUEST = 'FETCH_PATIENTS_REQUEST';
 function requestPatients() {
   return {
-    type: REQUEST_PATIENTS,
+    type: FETCH_PATIENTS_REQUEST,
   };
 }
 
-export const ERROR_PATIENTS = 'ERROR_PATIENTS';
+export const FETCH_PATIENTS_FAILURE = 'FETCH_PATIENTS_FAILURE';
 function errorPatients() {
   return {
-    type: ERROR_PATIENTS,
+    type: FETCH_PATIENTS_FAILURE,
   };
 }
 
-export const RECEIVE_PATIENTS = 'RECEIVE_PATIENTS';
+export const FETCH_PATIENTS_SUCCESS = 'FETCH_PATIENTS_SUCCESS';
 function receivePatients(json) {
   return {
-    type: RECEIVE_PATIENTS,
+    type: FETCH_PATIENTS_SUCCESS,
     payload: {
       patients: json,
       receivedAt: Date.now(),

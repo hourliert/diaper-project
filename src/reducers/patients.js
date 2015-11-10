@@ -1,4 +1,4 @@
-import { REQUEST_PATIENTS, RECEIVE_PATIENTS } from '../actions';
+import { FETCH_PATIENTS_REQUEST, FETCH_PATIENTS_SUCCESS } from '../actions';
 
 /**
  * Simple reducer that translates the behavior of a counter depending on the
@@ -9,19 +9,20 @@ import { REQUEST_PATIENTS, RECEIVE_PATIENTS } from '../actions';
  */
 export default function patients(state = { data: [] }, action) {
   switch (action.type) {
-  case REQUEST_PATIENTS:
+  case FETCH_PATIENTS_REQUEST:
     return {
       isFetching: true,
-      data: {
+      data: [
         ...state.data,
-      },
+      ],
     };
-  case RECEIVE_PATIENTS:
+  case FETCH_PATIENTS_SUCCESS:
     return {
       isFetching: false,
-      data: {
-        ...action.payload,
-      },
+      receivedAt: action.payload.receivedAt,
+      data: [
+        ...action.payload.patients,
+      ],
     };
   default:
     return state;
