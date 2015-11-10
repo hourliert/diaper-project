@@ -1,4 +1,5 @@
-import path from 'path';
+import { join } from 'path';
+import { readdirSync } from 'fs';
 import webpack from 'webpack';
 import MutliProgress from 'multi-progress';
 
@@ -27,6 +28,15 @@ const JS_LOADER = {
   include: __dirname,
   loader: 'babel-loader',
 };
+
+const nodeModules = {};
+readdirSync('node_modules')
+  .filter((x) => {
+    return ['.bin'].indexOf(x) === -1;
+  })
+  .forEach((mod) => {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
 
 // Common config. Used both for client and server.
 const commonConfig = {
@@ -95,7 +105,7 @@ const appConfig = Object.assign({}, commonConfig, {
     './src/client',
   ],
   output: {
-    path: path.join(__dirname, './build/client'),
+    path: join(__dirname, './build/client'),
     filename: 'bundle.js',
     publicPath: '/client/',
   },
@@ -161,10 +171,11 @@ const serverConfig = Object.assign({}, commonConfig, {
     './src/server',
   ],
   output: {
-    path: path.join(__dirname, './build'),
+    path: join(__dirname, './build'),
     filename: 'server.js',
     libraryTarget: 'commonjs2',
   },
+  externals: nodeModules,
   target: 'node',
   node: {
     console: false,
