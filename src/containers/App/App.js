@@ -14,7 +14,7 @@ export default class App extends Component {
     return (
       <div>
         <AppBar title="Projet Couches !" />
-        <ul>
+        <ul className="layout horizontal around-justified">
           <li>
             <Link to="/saisie">
               <RaisedButton label="Saisie" />

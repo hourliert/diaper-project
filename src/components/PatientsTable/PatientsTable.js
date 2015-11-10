@@ -7,36 +7,24 @@ import './PatientsTable.css';
 export default class PatientsTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedRow: -1,
-    };
-  }
-
-  _handleRowSelected(e) {
-    this.setState({
-      selectedPatientId: this.props.patients.data[e[0]]._id,
-      selectedRow: e[0],
-    });
   }
 
   render() {
-    const { fetchPatients, deletePatient, patients } = this.props;
-    const { selectedRow, selectedPatientId } = this.state;
+    const { deletePatient, patients } = this.props;
 
     const header = (
-      <TableHeader>
+      <TableHeader
+        adjustForCheckbox={false}>
         <TableRow>
-          <TableHeaderColumn colSpan="3" style={{textAlign: 'center'}}>
+          <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
             Couches par patient
           </TableHeaderColumn>
         </TableRow>
         <TableRow>
-          <TableHeaderColumn
-            tooltip="Prénom du patient">Prénom</TableHeaderColumn>
-          <TableHeaderColumn
-            tooltip="Nom du patient">Nom</TableHeaderColumn>
-          <TableHeaderColumn
-            tooltip="Couches utilisées">Couches</TableHeaderColumn>
+          <TableHeaderColumn>Prénom</TableHeaderColumn>
+          <TableHeaderColumn>Nom</TableHeaderColumn>
+          <TableHeaderColumn>Couches</TableHeaderColumn>
+          <TableHeaderColumn />
         </TableRow>
       </TableHeader>
     );
@@ -49,8 +37,7 @@ export default class PatientsTable extends Component {
       });
       return (
         <TableRow
-          key={indexPatient}
-          selected={indexPatient === selectedRow}>
+          key={indexPatient}>
           <TableRowColumn>{patient.firstName}</TableRowColumn>
           <TableRowColumn>{patient.lastName}</TableRowColumn>
           <TableRowColumn>
@@ -58,24 +45,25 @@ export default class PatientsTable extends Component {
               {diapers}
             </ul>
           </TableRowColumn>
+          <TableRowColumn>
+            <RaisedButton
+              label="Supprimer"
+              onClick={deletePatient.bind(this, patient._id)}/>
+          </TableRowColumn>
         </TableRow>
       );
     });
     const body = (
-      <TableBody>
+      <TableBody
+        displayRowCheckbox={false}>
         {bodyData}
       </TableBody>
     );
 
     return (
       <div className="layout vertical center-center">
-        <button onClick={fetchPatients}>Fetch</button>
-        <div className="padded">
-          <RaisedButton
-            label="Supprimer"
-            onClick={deletePatient.bind(this, selectedPatientId)}/>
-        </div>
-        <Table onRowSelection={this._handleRowSelected.bind(this)}>
+        <Table
+          selectable={false}>
           {header}
           {body}
         </Table>
