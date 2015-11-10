@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
-import counter from './counter';
+import patients from './patients';
 
 const rootReducer = combineReducers({
-  counter,
+  patients,
   router: routerStateReducer,
 });
 

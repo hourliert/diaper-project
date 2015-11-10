@@ -11,6 +11,7 @@ import 'babel-core/polyfill';
 import path from 'path';
 import Express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -24,6 +25,7 @@ import configureStore from './store';
 import { SERVER_PORT, SERVER_RENDERING } from './config';
 
 import patientsAPI from './api/patients';
+import db from './db/db';
 
 const app = global.server = new Express();
 const port = SERVER_PORT;
@@ -65,20 +67,20 @@ async function handleRender(req, res, next) {
     // `fetchCounter` is a fake API described in `./api/counter.js`.
     // The first thing to do before rendering the app is to ask the API for
     // the initial counter value.
-    const counter = 0;
-    // try {
-    //   counter = await fetchCounter();
-    // } catch (err) {
-    //   console.log(`${err.message}: Initializing a new counter`); // eslint-disable-line no-console
-    // } finally {
-    //   counter = counter || 0;
-    // }
+    let patients = 0;
+    try {
+      patients = await db.getPatients();
+    } catch (err) {
+      console.log(`${err.message}: Error while getting patients`); // eslint-disable-line no-console
+    } finally {
+      patients = patients || {};
+    }
 
     // The server must have a reference to the redux application store.
     // Let's create it. Notice that we pass to it `reduxReactRouter` and
     // `createMemoryHistory`. This is because these functions differ between
     // client and server.
-    const initialState = { counter };
+    const initialState = { patients };
     const store = configureStore(initialState, reduxReactRouter, createMemoryHistory);
 
     // Finally, each time the store dispatch a new action. (Eg. routeDidChange)
@@ -114,7 +116,7 @@ async function handleRender(req, res, next) {
 
 app.set('port', (process.env.PORT || port));
 app.use('/client', Express.static(path.join(__dirname, './client')));
-app.use('/api/patients', patientsAPI);
+app.use('/api/patients', cors(), patientsAPI);
 if (SERVER_RENDERING) {
   app.use(handleRender);
 } else {

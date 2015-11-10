@@ -31,7 +31,7 @@ export default function configureStore(initialState, reduxReactRouter, createHis
     )(createStore);
   }
 
-  // Create the store using the reducers defined in `../reducers/counter.js`
+  // Create the store using the reducers defined in `../reducers`
   const store = finalCreateStore(rootReducer, initialState);
 
   // If we are on client and the webpackHotMiddleware is loaded in the client,

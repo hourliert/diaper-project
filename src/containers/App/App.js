@@ -1,4 +1,3 @@
-import 'babel-core/polyfill';
 import React, { Component, PropTypes } from 'react';
 import { RaisedButton } from 'material-ui';
 import { Link } from 'react-router';
@@ -12,13 +11,13 @@ export default class App extends Component {
         <h1>App</h1>
         <ul>
           <li>
-            <Link to="/counter">
-              <RaisedButton label="Counter" />
+            <Link to="/saisie">
+              <RaisedButton label="Saisie" />
             </Link>
           </li>
           <li>
-            <Link to="/about">
-              <RaisedButton label="About" />
+            <Link to="/export">
+              <RaisedButton label="Export" />
             </Link>
           </li>
         </ul>

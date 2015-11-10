@@ -1,14 +1,14 @@
 /* eslint-disable */
-jest.dontMock('../Counter.js');
+jest.dontMock('../PatientsTable.js');
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import Counter from '../Counter';
+import PatientsTable from '../PatientsTable';
 
-describe('Counter', () => {
+describe('PatientsTable', () => {
   it('should work', () => {
-    expect(Counter).toBeDefined();
+    expect(PatientsTable).toBeDefined();
   });
 });
 

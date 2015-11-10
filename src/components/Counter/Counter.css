@@ -1,7 +1,0 @@
-:root {
-  --counterColor: #13a;
-}
-
-.Counter {
-  color: color( var(--counterColor) blackness(-10%) );
-}
