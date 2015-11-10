@@ -1,64 +1,84 @@
 import React, { Component, PropTypes } from 'react';
-import { Table } from 'reactabular';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
+
+// import { Table } from 'reactabular';
 import './PatientsTable.css';
 
 export default class PatientsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: [
-        {
-          property: 'firstName',
-          header: 'Prenom',
-        },
-        {
-          property: 'lastName',
-          header: 'Nom',
-        },
-        {
-          property: 'diapers',
-          header: 'Couche',
-          cell: (value) => {
-            return (
-              <ul>
-                {value.map((diaper, index) => {
-                  return (
-                    <li key={index}>
-                      <span>{diaper.type}</span>: <span>{diaper.amount}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            );
-          },
-        },
-        {
-          cell: (value, cellData, rowIndex) => {
-            const { deletePatient } = this.props;
-
-            return {
-              value: (
-                <span>
-                  <span className="remove" onClick={deletePatient.bind(this, cellData[rowIndex]._id)}>
-                    &#10007;
-                  </span>
-                </span>
-              ),
-            };
-          },
-        },
-      ],
+      selectedRow: -1,
     };
   }
 
+  _handleRowSelected(e) {
+    this.setState({
+      selectedPatientId: this.props.patients.data[e[0]]._id,
+      selectedRow: e[0],
+    });
+  }
+
   render() {
-    const { fetchPatients, patients } = this.props;
-    const columns = this.state.columns;
+    const { fetchPatients, deletePatient, patients } = this.props;
+    const { selectedRow, selectedPatientId } = this.state;
+
+    const header = (
+      <TableHeader>
+        <TableRow>
+          <TableHeaderColumn colSpan="3" style={{textAlign: 'center'}}>
+            Couches par patient
+          </TableHeaderColumn>
+        </TableRow>
+        <TableRow>
+          <TableHeaderColumn
+            tooltip="Prénom du patient">Prénom</TableHeaderColumn>
+          <TableHeaderColumn
+            tooltip="Nom du patient">Nom</TableHeaderColumn>
+          <TableHeaderColumn
+            tooltip="Couches utilisées">Couches</TableHeaderColumn>
+        </TableRow>
+      </TableHeader>
+    );
+
+    const bodyData = patients.data.map((patient, indexPatient) => {
+      const diapers = patient.diapers.map((diaper, indexDiaper) => {
+        return (
+          <li key={indexDiaper}>{diaper.type}: {diaper.amount}</li>
+        );
+      });
+      return (
+        <TableRow
+          key={indexPatient}
+          selected={indexPatient === selectedRow}>
+          <TableRowColumn>{patient.firstName}</TableRowColumn>
+          <TableRowColumn>{patient.lastName}</TableRowColumn>
+          <TableRowColumn>
+            <ul>
+              {diapers}
+            </ul>
+          </TableRowColumn>
+        </TableRow>
+      );
+    });
+    const body = (
+      <TableBody>
+        {bodyData}
+      </TableBody>
+    );
 
     return (
-      <div>
+      <div className="layout vertical center-center">
         <button onClick={fetchPatients}>Fetch</button>
-        <Table columns={columns} data={patients.data}/>
+        <div className="padded">
+          <RaisedButton
+            label="Supprimer"
+            onClick={deletePatient.bind(this, selectedPatientId)}/>
+        </div>
+        <Table onRowSelection={this._handleRowSelected.bind(this)}>
+          {header}
+          {body}
+        </Table>
       </div>
     );
   }

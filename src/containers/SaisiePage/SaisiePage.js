@@ -24,9 +24,9 @@ function mapDispatchToProps(dispatch) {
 export default class SaisiePage extends Component {
   render() {
     return (
-      <div>
+      <div className="layout vertical">
         <PatientInput {...this.props} />
-        <PatientsTable {...this.props} />
+        <PatientsTable className="flex" {...this.props} />
       </div>
     );
   }

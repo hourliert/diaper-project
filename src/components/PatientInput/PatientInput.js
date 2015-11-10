@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { TextField, SelectField, FloatingActionButton } from 'material-ui';
+import { TextField, SelectField, FloatingActionButton, RaisedButton } from 'material-ui';
 import './PatientInput.css';
 
 const diaperTypes = [
@@ -58,14 +58,18 @@ export default class PatientInput extends Component {
       let removeButton;
       if (index > 0) {
         removeButton = (
-          <FloatingActionButton mini onClick={this._handleDeleteDiaper.bind(this, index)}>
-            <i className="material-icons">remove_circle_outline</i>
-          </FloatingActionButton>
+          <div>
+            <FloatingActionButton
+              mini
+              onClick={this._handleDeleteDiaper.bind(this, index)}>
+              <i className="material-icons">remove_circle_outline</i>
+            </FloatingActionButton>
+        </div>
         );
       }
 
       couche.push(
-        <div key={index}>
+        <div key={index} className="layout horizontal">
           <SelectField
             value={diaper.type}
             onChange={this._handleDiaperChange.bind(this, index, 'type')}
@@ -87,7 +91,9 @@ export default class PatientInput extends Component {
     });
 
     return (
-      <form onSubmit={this._handleSubmit.bind(this)}>
+      <form
+        className="layout horizontal around-justified"
+        onSubmit={this._handleSubmit.bind(this)}>
         <TextField
           type="text"
           hintText="Prénom"
@@ -99,15 +105,22 @@ export default class PatientInput extends Component {
           value={this.state.lastName}
           onChange={this._handleChange.bind(this, 'lastName')}/>
 
-        <FloatingActionButton mini onClick={this._handleAddDiaper.bind(this)}>
-          <i className="material-icons">add_circle_outline</i>
-        </FloatingActionButton>
-        <div>
+        <div className="layout vertical">
           {couche}
         </div>
 
-        <button
-          type="submit">Submit</button>
+        <div>
+          <FloatingActionButton
+            mini
+            className="fab-button"
+            onClick={this._handleAddDiaper.bind(this)}>
+            <i className="material-icons">add_circle_outline</i>
+          </FloatingActionButton>
+        </div>
+
+        <RaisedButton
+          label="Ajouter"
+          type="submit"/>
       </form>
     );
   }

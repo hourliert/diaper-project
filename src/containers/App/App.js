@@ -1,14 +1,19 @@
 import React, { Component, PropTypes } from 'react';
-import { RaisedButton } from 'material-ui';
+import { AppBar, RaisedButton } from 'material-ui';
 import { Link } from 'react-router';
+import './App.css';
 
 export default class App extends Component {
+  _handleAppMenu() {
+    this.refs.leftNav.toggle();
+  }
+
   render() {
     const { children } = this.props;
 
     return (
       <div>
-        <h1>App</h1>
+        <AppBar title="Projet Couches !" />
         <ul>
           <li>
             <Link to="/saisie">
