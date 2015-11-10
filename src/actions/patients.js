@@ -81,3 +81,51 @@ export function deletePatient(id) {
     dispatch(deletePatientsSuccess(id));
   };
 }
+
+export const ADD_PATIENTS_REQUEST = 'ADD_PATIENTS_REQUEST';
+function addPatientsRequest() {
+  return {
+    type: ADD_PATIENTS_REQUEST,
+  };
+}
+
+export const ADD_PATIENTS_FAILURE = 'ADD_PATIENTS_FAILURE';
+function addPatientsFailure() {
+  return {
+    type: ADD_PATIENTS_FAILURE,
+  };
+}
+
+export const ADD_PATIENTS_SUCCESS = 'ADD_PATIENTS_SUCCESS';
+function addPatientsSuccess(json) {
+  return {
+    type: ADD_PATIENTS_SUCCESS,
+    payload: {
+      patient: json,
+      receivedAt: Date.now(),
+    },
+  };
+}
+
+export function addPatient(patient) {
+  return async (dispatch) => {
+    let json;
+
+    dispatch(addPatientsRequest());
+    try {
+      const response = await fetch('http://localhost:5000/api/patients', {
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patient),
+      });
+      json = await response.json();
+    } catch (e) {
+      dispatch(addPatientsFailure());
+    }
+
+    dispatch(addPatientsSuccess(json));
+  };
+}

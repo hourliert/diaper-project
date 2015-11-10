@@ -13,10 +13,13 @@ import { Provider } from 'react-redux';
 import { ReduxRouter, reduxReactRouter } from 'redux-router';
 import { createHistory } from 'history';
 import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import configureStore from './store';
 
 import { REDUX_DEVTOOLS } from './config';
+
+injectTapEventPlugin();
 
 // First we need to retrieve the state of the application and create the store
 // If the server has rendered the app, `window.__INITIAL_STATE__` has been set

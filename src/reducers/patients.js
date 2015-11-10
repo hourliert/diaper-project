@@ -3,6 +3,8 @@ import {
   FETCH_PATIENTS_SUCCESS,
   DELETE_PATIENTS_REQUEST,
   DELETE_PATIENTS_SUCCESS,
+  ADD_PATIENTS_REQUEST,
+  ADD_PATIENTS_SUCCESS,
 } from '../actions';
 
 /**
@@ -43,6 +45,22 @@ export default function patients(state = { data: [] }, action) {
       data: state.data.filter(patient =>
         patient._id !== action.payload.deletedId
       ),
+    };
+  case ADD_PATIENTS_REQUEST:
+    return {
+      isAdding: true,
+      data: [
+        ...state.data,
+      ],
+    };
+  case ADD_PATIENTS_SUCCESS:
+    return {
+      isAdding: false,
+      receivedAt: action.payload.receivedAt,
+      data: [
+        action.payload.patient,
+        ...state.data,
+      ],
     };
   default:
     return state;

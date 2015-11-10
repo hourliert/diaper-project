@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Table } from 'reactabular';
-import findIndex from 'lodash.findindex';
 import './PatientsTable.css';
 
 export default class PatientsTable extends Component {
@@ -14,7 +13,7 @@ export default class PatientsTable extends Component {
         },
         {
           property: 'lastName',
-          header: 'Nom de famille',
+          header: 'Nom',
         },
         {
           property: 'diapers',
@@ -59,7 +58,6 @@ export default class PatientsTable extends Component {
     return (
       <div>
         <button onClick={fetchPatients}>Fetch</button>
-        <div>Patients Table</div>
         <Table columns={columns} data={patients.data}/>
       </div>
     );

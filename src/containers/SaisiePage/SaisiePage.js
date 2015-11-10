@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import * as PatientsAction from '../../actions/patients';
 import PatientsTable from '../../components/PatientsTable';
+import PatientInput from '../../components/PatientInput';
 
 function mapStateToProps(state) {
   return {
@@ -24,8 +25,8 @@ export default class SaisiePage extends Component {
   render() {
     return (
       <div>
-        <span>saisie</span>
-        <PatientsTable {...this.props}/>
+        <PatientInput {...this.props} />
+        <PatientsTable {...this.props} />
       </div>
     );
   }
