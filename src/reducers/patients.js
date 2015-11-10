@@ -7,19 +7,19 @@ import { REQUEST_PATIENTS, RECEIVE_PATIENTS } from '../actions';
  * @param  {string} action The action
  * @return {number}        New Counter state
  */
-export default function patients(state = { patients: [] }, action) {
+export default function patients(state = { data: [] }, action) {
   switch (action.type) {
   case REQUEST_PATIENTS:
     return {
       isFetching: true,
-      patients: {
-        ...state.patients,
+      data: {
+        ...state.data,
       },
     };
   case RECEIVE_PATIENTS:
     return {
       isFetching: false,
-      patients: {
+      data: {
         ...action.payload,
       },
     };

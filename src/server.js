@@ -80,7 +80,11 @@ async function handleRender(req, res, next) {
     // Let's create it. Notice that we pass to it `reduxReactRouter` and
     // `createMemoryHistory`. This is because these functions differ between
     // client and server.
-    const initialState = { patients };
+    const initialState = {
+      patients: {
+        data: patients,
+      },
+    };
     const store = configureStore(initialState, reduxReactRouter, createMemoryHistory);
 
     // Finally, each time the store dispatch a new action. (Eg. routeDidChange)
