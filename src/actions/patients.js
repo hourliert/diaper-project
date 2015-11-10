@@ -35,6 +35,7 @@ export function fetchPatients() {
       json = await response.json();
     } catch (e) {
       dispatch(fetchPatientsFailure());
+      return;
     }
 
     dispatch(fetchPatientsSuccess(json));
@@ -76,6 +77,7 @@ export function deletePatient(id) {
       await response.text();
     } catch (e) {
       dispatch(deletePatientsFailure());
+      return;
     }
 
     dispatch(deletePatientsSuccess(id));
@@ -124,6 +126,7 @@ export function addPatient(patient) {
       json = await response.json();
     } catch (e) {
       dispatch(addPatientsFailure());
+      return;
     }
 
     dispatch(addPatientsSuccess(json));
