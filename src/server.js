@@ -63,6 +63,12 @@ function renderFullPage(html, initialState) {
  * Express middleware that handles the server rendering of the react app.
  */
 async function handleRender(req, res, next) {
+  const {headers} = req;
+
+  global.navigator = {
+    userAgent: headers['user-agent'],
+  };
+
   try {
     // Our application displays a counter with a potential initial value.
     // How the server could know this initial value? Simple! By asking an API.

@@ -64,7 +64,7 @@ export default class PatientInput extends Component {
               onClick={this._handleDeleteDiaper.bind(this, index)}>
               <i className="material-icons">remove_circle_outline</i>
             </FloatingActionButton>
-        </div>
+          </div>
         );
       }
 

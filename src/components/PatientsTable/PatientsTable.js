@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
-
-// import { Table } from 'reactabular';
 import './PatientsTable.css';
 
 export default class PatientsTable extends Component {
@@ -15,11 +13,6 @@ export default class PatientsTable extends Component {
     const header = (
       <TableHeader
         adjustForCheckbox={false}>
-        <TableRow>
-          <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-            Couches par patient
-          </TableHeaderColumn>
-        </TableRow>
         <TableRow>
           <TableHeaderColumn>Prénom</TableHeaderColumn>
           <TableHeaderColumn>Nom</TableHeaderColumn>
