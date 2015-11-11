@@ -48,7 +48,15 @@ export default class PatientInput extends Component {
 
   _handleSubmit(e) {
     e.preventDefault();
+
     this.props.addPatient(this.state);
+
+    // todo: handle errors
+    this.state = {
+      firstName: '',
+      lastName: '',
+      diapers: [{}],
+    };
   }
 
   render() {

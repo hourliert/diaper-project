@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
+
 import './PatientsTable.css';
 
 export default class PatientsTable extends Component {
@@ -16,16 +17,22 @@ export default class PatientsTable extends Component {
         <TableRow>
           <TableHeaderColumn>Prénom</TableHeaderColumn>
           <TableHeaderColumn>Nom</TableHeaderColumn>
-          <TableHeaderColumn>Couches</TableHeaderColumn>
+          <TableHeaderColumn>Types de couches</TableHeaderColumn>
+          <TableHeaderColumn>Quantités</TableHeaderColumn>
           <TableHeaderColumn />
         </TableRow>
       </TableHeader>
     );
 
     const bodyData = patients.data.map((patient, indexPatient) => {
-      const diapers = patient.diapers.map((diaper, indexDiaper) => {
+      const diaperTypes = patient.diapers.map((diaper, indexDiaper) => {
         return (
-          <li key={indexDiaper}>{diaper.type}: {diaper.amount}</li>
+          <li key={indexDiaper}>{diaper.type}</li>
+        );
+      });
+      const diaperAmounts = patient.diapers.map((diaper, indexDiaper) => {
+        return (
+          <li key={indexDiaper}>{diaper.amount}</li>
         );
       });
       return (
@@ -35,20 +42,33 @@ export default class PatientsTable extends Component {
           <TableRowColumn>{patient.lastName}</TableRowColumn>
           <TableRowColumn>
             <ul>
-              {diapers}
+              {diaperTypes}
             </ul>
           </TableRowColumn>
           <TableRowColumn>
-            <RaisedButton
-              label="Supprimer"
-              onClick={deletePatient.bind(this, patient._id)}/>
+            <ul>
+              {diaperAmounts}
+            </ul>
+          </TableRowColumn>
+          <TableRowColumn>
+            <div className="layout horizontal around-justified">
+              <RaisedButton
+                label="Editer"
+                secondary
+                onClick={deletePatient.bind(this, patient._id)}/>
+              <RaisedButton
+                label="Supprimer"
+                primary
+                onClick={deletePatient.bind(this, patient._id)}/>
+            </div>
           </TableRowColumn>
         </TableRow>
       );
     });
     const body = (
       <TableBody
-        displayRowCheckbox={false}>
+        displayRowCheckbox={false}
+        stripedRows>
         {bodyData}
       </TableBody>
     );
