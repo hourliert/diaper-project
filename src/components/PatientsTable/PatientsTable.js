@@ -3,21 +3,25 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
 
+import * as PatientsAction from '../../actions/patients';
 import * as EditedPatient from '../../actions/editedPatient';
 import './PatientsTable.css';
 
 function mapStateToProps(state) {
   return {
     editedPatient: state.editedPatient,
+    patients: state.patients,
   };
 }
 
 /**
- * We bind actions to the component props.
  * These actions are used to dispatch an action to the redux store.
  */
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(EditedPatient, dispatch);
+  return bindActionCreators({
+    ...EditedPatient,
+    ...PatientsAction,
+  }, dispatch);
 }
 
 @connect(mapStateToProps, mapDispatchToProps)

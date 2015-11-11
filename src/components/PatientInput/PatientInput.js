@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TextField, SelectField, FloatingActionButton, RaisedButton } from 'material-ui';
 
+import * as PatientsAction from '../../actions/patients';
 import * as EditedPatient from '../../actions/editedPatient';
 import './PatientInput.css';
 
@@ -17,6 +18,7 @@ const diaperTypes = [
 function mapStateToProps(state) {
   return {
     editedPatient: state.editedPatient,
+    patients: state.patients,
   };
 }
 
@@ -25,7 +27,10 @@ function mapStateToProps(state) {
  * These actions are used to dispatch an action to the redux store.
  */
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(EditedPatient, dispatch);
+  return bindActionCreators({
+    ...EditedPatient,
+    ...PatientsAction,
+  }, dispatch);
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
