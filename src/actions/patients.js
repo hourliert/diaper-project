@@ -132,3 +132,50 @@ export function addPatient(patient) {
     dispatch(addPatientsSuccess(json));
   };
 }
+
+export const UPDATE_PATIENTS_REQUEST = 'UPDATE_PATIENTS_REQUEST';
+function updatePatientsRequest() {
+  return {
+    type: UPDATE_PATIENTS_REQUEST,
+  };
+}
+
+export const UPDATE_PATIENTS_FAILURE = 'UPDATE_PATIENTS_FAILURE';
+function updatePatientsFailure() {
+  return {
+    type: UPDATE_PATIENTS_FAILURE,
+  };
+}
+
+export const UPDATE_PATIENTS_SUCCESS = 'UPDATE_PATIENTS_SUCCESS';
+function updatePatientsSuccess(json) {
+  return {
+    type: UPDATE_PATIENTS_SUCCESS,
+    payload: {
+      patient: json,
+      receivedAt: Date.now(),
+    },
+  };
+}
+
+export function updatePatient(patient) {
+  return async (dispatch) => {
+    dispatch(updatePatientsRequest());
+    try {
+      const response = await fetch(`http://localhost:5000/api/patients/${patient._id}`, {
+        method: 'put',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patient),
+      });
+      await response.text();
+    } catch (e) {
+      dispatch(updatePatientsFailure());
+      return;
+    }
+
+    dispatch(updatePatientsSuccess(patient));
+  };
+}

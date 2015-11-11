@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { TextField, SelectField, FloatingActionButton, RaisedButton } from 'material-ui';
+
+import * as EditedPatient from '../../actions/editedPatient';
 import './PatientInput.css';
 
 const diaperTypes = [
@@ -10,6 +14,21 @@ const diaperTypes = [
    { text: 'Couche 5' },
 ];
 
+function mapStateToProps(state) {
+  return {
+    editedPatient: state.editedPatient,
+  };
+}
+
+/**
+ * We bind actions to the component props.
+ * These actions are used to dispatch an action to the redux store.
+ */
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(EditedPatient, dispatch);
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class PatientInput extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +37,12 @@ export default class PatientInput extends Component {
       lastName: '',
       diapers: [{}],
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editedPatient } = nextProps;
+    this._mapPropsToState(editedPatient);
+    return true;
   }
 
   _handleAddDiaper() {
@@ -49,7 +74,11 @@ export default class PatientInput extends Component {
   _handleSubmit(e) {
     e.preventDefault();
 
-    this.props.addPatient(this.state);
+    if (this.state._id) {
+      this.props.updatePatient(this.state);
+    } else {
+      this.props.addPatient(this.state);
+    }
 
     // todo: handle errors
     this.state = {
@@ -59,8 +88,29 @@ export default class PatientInput extends Component {
     };
   }
 
+  _mapPropsToState(patient) {
+    if (!patient._id) {
+      this.state = {
+        firstName: '',
+        lastName: '',
+        diapers: [{}],
+      };
+    } else {
+      this.setState({
+        ...patient,
+      });
+    }
+  }
+
   render() {
-    const couche = [];
+    const { cancelEdition } = this.props;
+    const couches = [];
+
+    const cancelEditionButton = this.state._id ? (
+      <RaisedButton
+        label="Annuler"
+        onClick={cancelEdition.bind(this)}/>
+    ) : undefined;
 
     this.state.diapers.forEach((diaper, index) => {
       let removeButton;
@@ -76,7 +126,7 @@ export default class PatientInput extends Component {
         );
       }
 
-      couche.push(
+      couches.push(
         <div key={index} className="layout horizontal">
           <SelectField
             value={diaper.type}
@@ -114,7 +164,7 @@ export default class PatientInput extends Component {
           onChange={this._handleChange.bind(this, 'lastName')}/>
 
         <div className="layout vertical">
-          {couche}
+          {couches}
         </div>
 
         <div>
@@ -126,8 +176,9 @@ export default class PatientInput extends Component {
           </FloatingActionButton>
         </div>
 
+        {cancelEditionButton}
         <RaisedButton
-          label="Ajouter"
+          label={this.state._id ? 'Enregistrer' : 'Ajouter'}
           type="submit"/>
       </form>
     );
@@ -136,4 +187,7 @@ export default class PatientInput extends Component {
 
 PatientInput.propTypes = {
   addPatient: PropTypes.func.isRequired,
+  updatePatient: PropTypes.func.isRequired,
+  cancelEdition: PropTypes.func.isRequired,
+  editedPatient: PropTypes.any.isRequired,
 };

@@ -1,15 +1,33 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
 
+import * as EditedPatient from '../../actions/editedPatient';
 import './PatientsTable.css';
 
+function mapStateToProps(state) {
+  return {
+    editedPatient: state.editedPatient,
+  };
+}
+
+/**
+ * We bind actions to the component props.
+ * These actions are used to dispatch an action to the redux store.
+ */
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(EditedPatient, dispatch);
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class PatientsTable extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { deletePatient, patients } = this.props;
+    const { deletePatient, editPatient, patients } = this.props;
 
     const header = (
       <TableHeader
@@ -55,7 +73,7 @@ export default class PatientsTable extends Component {
               <RaisedButton
                 label="Editer"
                 secondary
-                onClick={deletePatient.bind(this, patient._id)}/>
+                onClick={editPatient.bind(this, patient)}/>
               <RaisedButton
                 label="Supprimer"
                 primary
@@ -88,5 +106,6 @@ export default class PatientsTable extends Component {
 PatientsTable.propTypes = {
   fetchPatients: PropTypes.func.isRequired,
   deletePatient: PropTypes.func.isRequired,
+  editPatient: PropTypes.func.isRequired,
   patients: PropTypes.any.isRequired,
 };

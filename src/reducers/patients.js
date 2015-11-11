@@ -5,6 +5,8 @@ import {
   DELETE_PATIENTS_SUCCESS,
   ADD_PATIENTS_REQUEST,
   ADD_PATIENTS_SUCCESS,
+  UPDATE_PATIENTS_REQUEST,
+  UPDATE_PATIENTS_SUCCESS,
 } from '../actions';
 
 /**
@@ -61,6 +63,23 @@ export default function patients(state = { data: [] }, action) {
         action.payload.patient,
         ...state.data,
       ],
+    };
+  case UPDATE_PATIENTS_REQUEST:
+    return {
+      isUpdating: true,
+      data: [
+        ...state.data,
+      ],
+    };
+  case UPDATE_PATIENTS_SUCCESS:
+    return {
+      isUpdating: false,
+      receivedAt: action.payload.receivedAt,
+      data: state.data.map(patient => {
+        return (patient._id === action.payload.patient._id) ?
+          action.payload.patient :
+          patient;
+      }),
     };
   default:
     return state;
