@@ -25,6 +25,13 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class PatientsTable extends Component {
+  static propTypes = {
+    fetchPatients: PropTypes.func.isRequired,
+    deletePatient: PropTypes.func.isRequired,
+    editPatient: PropTypes.func.isRequired,
+    patients: PropTypes.any.isRequired,
+  };
+
   constructor(props) {
     super(props);
   }
@@ -105,10 +112,3 @@ export default class PatientsTable extends Component {
     );
   }
 }
-
-PatientsTable.propTypes = {
-  fetchPatients: PropTypes.func.isRequired,
-  deletePatient: PropTypes.func.isRequired,
-  editPatient: PropTypes.func.isRequired,
-  patients: PropTypes.any.isRequired,
-};

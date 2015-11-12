@@ -34,6 +34,13 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class PatientInput extends Component {
+  static propTypes = {
+    addPatient: PropTypes.func.isRequired,
+    updatePatient: PropTypes.func.isRequired,
+    cancelEdition: PropTypes.func.isRequired,
+    editedPatient: PropTypes.any.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -188,10 +195,3 @@ export default class PatientInput extends Component {
     );
   }
 }
-
-PatientInput.propTypes = {
-  addPatient: PropTypes.func.isRequired,
-  updatePatient: PropTypes.func.isRequired,
-  cancelEdition: PropTypes.func.isRequired,
-  editedPatient: PropTypes.any.isRequired,
-};
