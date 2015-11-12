@@ -5,7 +5,6 @@ import { TextField, SelectField, FloatingActionButton, RaisedButton } from 'mate
 
 import * as PatientsAction from '../../actions/patients';
 import * as EditedPatient from '../../actions/editedPatient';
-import './PatientInput.css';
 
 const diaperTypes = [
    { text: 'Couche 1' },

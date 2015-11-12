@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { AppBar, RaisedButton, Styles } from 'material-ui';
 import { Link } from 'react-router';
 import theme from '../../themes';
-import './App.css';
 
 @Styles.ThemeDecorator(Styles.ThemeManager.getMuiTheme(theme)) // eslint-disable-line new-cap
 export default class App extends Component {

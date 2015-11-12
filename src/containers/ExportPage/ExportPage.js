@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 // import PatientsTable from '../../components/PatientsTable';
 // import PatientInput from '../../components/PatientInput';
 
-import './ExportPage.css';
+// import './ExportPage.css';
 
 // function mapStateToProps(state) {
 //   return {

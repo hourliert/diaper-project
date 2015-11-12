@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Card, CardHeader, Avatar } from 'material-ui';
+import { Style } from 'radium';
 
 import PatientsTable from '../../components/PatientsTable';
 import PatientInput from '../../components/PatientInput';
 
-import './SaisiePage.css';
+import styles from './styles';
 
 export default class SaisiePage extends Component {
   render() {
     return (
       <div className="layout vertical">
+        <Style rules={styles}/>
         <Card className="padded">
           <CardHeader
             title="Saisie"
@@ -17,6 +19,7 @@ export default class SaisiePage extends Component {
             avatar={<Avatar>1</Avatar>}/>
           <PatientInput {...this.props} />
         </Card>
+
         <Card className="padded">
           <CardHeader
             title="Visualisation"

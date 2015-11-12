@@ -20,6 +20,8 @@ import {ReduxRouter} from 'redux-router';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 
+import Html from './helpers/Html';
+
 import configureStore from './store';
 
 import { SERVER_PORT, SERVER_RENDERING } from './config';
@@ -109,16 +111,21 @@ async function handleRender(req, res, next) {
         res.status(500).send('Missing routerState');
       } else {
         // We render the application server side.
-        const html = renderToString(
-          <Provider store={store} key="provider">
+        const component = (
+           <Provider store={store} key="provider">
             <ReduxRouter {...routerState}/>
           </Provider>
         );
-        const finalState = store.getState();
+        const html = (
+          <Html
+            component={component}
+            store={store}
+            radiumConfig={{userAgent: req.headers['user-agent']}}/>
+        );
 
         // Finally we send the application markup to the client.
         // Let's go to `./client.js`!
-        res.status(200).send(renderFullPage(html, finalState));
+        res.status(200).send(renderToString(html));
       }
     }));
   } catch (err) {

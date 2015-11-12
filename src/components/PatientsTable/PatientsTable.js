@@ -5,7 +5,6 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 import * as PatientsAction from '../../actions/patients';
 import * as EditedPatient from '../../actions/editedPatient';
-import './PatientsTable.css';
 
 function mapStateToProps(state) {
   return {
