@@ -32,7 +32,8 @@
   "scripts": {
     "test": "jest",
     "build": "gulp bundle",
-    "start": "gulp serve"
+    "start": "gulp serve",
+    "postinstall": "gulp bundle && babel-node ./scripts/install.js"
   },
   "dependencies": {
     "body-parser": "^1.14.1",
