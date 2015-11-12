@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
+import { editPatient } from './editedPatient';
+
 export const FETCH_PATIENTS_REQUEST = 'FETCH_PATIENTS_REQUEST';
 function fetchPatientsRequest() {
   return {
@@ -177,5 +179,6 @@ export function updatePatient(patient) {
     }
 
     dispatch(updatePatientsSuccess(patient));
+    dispatch(editPatient(patient));
   };
 }

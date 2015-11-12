@@ -36,6 +36,7 @@ function mapDispatchToProps(dispatch) {
 export default class PatientInput extends Component {
   static propTypes = {
     addPatient: PropTypes.func.isRequired,
+    editPatient: PropTypes.func.isRequired,
     updatePatient: PropTypes.func.isRequired,
     cancelEdition: PropTypes.func.isRequired,
     editedPatient: PropTypes.any.isRequired,
@@ -87,6 +88,7 @@ export default class PatientInput extends Component {
 
     if (this.state._id) {
       this.props.updatePatient(this.state);
+      this.props.editPatient(this.state);
     } else {
       this.props.addPatient(this.state);
     }
