@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Table, TableBody, TableHeader, TableFooter, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
+import { TextField, Table, TableBody, TableHeader, TableFooter, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
 
 import * as PatientsAction from '../../actions/patients';
 
@@ -30,6 +30,9 @@ export default class DiapersOrder extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      multiplier: '1',
+    };
   }
 
   componentWillMount() {
@@ -112,11 +115,19 @@ export default class DiapersOrder extends Component {
     );
   }
 
+  _handleMutliplierChange(e) {
+    this.setState({
+      multiplier: e.target.value,
+    });
+  }
+
   _computeFooter(diapersHeader, diapers) {
     const footerContent = diapersHeader.map((header, index) => {
+      const total = (parseInt(this.state.multiplier, 10) || 1) * parseInt(diapers[header], 10);
+
       return (
         <TableRowColumn key={index}>
-          {diapers[header]}
+          {total}
         </TableRowColumn>
       );
     });
@@ -125,7 +136,17 @@ export default class DiapersOrder extends Component {
       <TableFooter
         adjustForCheckbox={false}>
         <TableRow>
-          <TableRowColumn>Total</TableRowColumn>
+          <TableRowColumn>
+            <div className="layout horizontal center-center">
+              <div className="flex-1">Total</div>
+              <TextField
+                className="flex-1"
+                value={this.state.multiplier}
+                hintText="Nombre"
+                floatingLabelText="Multiplieur"
+                onChange={this._handleMutliplierChange.bind(this)}/>
+            </div>
+          </TableRowColumn>
           {footerContent}
         </TableRow>
       </TableFooter>

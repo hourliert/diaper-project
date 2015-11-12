@@ -21,6 +21,15 @@ export default class ExportPage extends Component {
             <DiapersOrder />
           </Card>
         </div>
+        <div style={[styles.padded]}>
+          <Card className="padded">
+            <CardHeader
+              title="Commande"
+              subtitle="Cartons à commander"
+              avatar={<Avatar>4</Avatar>}/>
+            <div>Couches par carton + Commande</div>
+          </Card>
+        </div>
       </div>
     );
   }
