@@ -41,6 +41,7 @@ export default class PatientsTable extends Component {
 
     const header = (
       <TableHeader
+        displaySelectAll={false}
         adjustForCheckbox={false}>
         <TableRow>
           <TableHeaderColumn>Prénom</TableHeaderColumn>
