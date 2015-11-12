@@ -1,3 +1,4 @@
+import { SERVER_HOSTNAME, SERVER_PORT } from '../config';
 import fetch from 'isomorphic-fetch';
 
 import { editPatient } from './editedPatient';
@@ -33,7 +34,7 @@ export function fetchPatients() {
 
     dispatch(fetchPatientsRequest());
     try {
-      const response = await fetch('http://localhost:5000/api/patients');
+      const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients`);
       json = await response.json();
     } catch (e) {
       dispatch(fetchPatientsFailure());
@@ -73,7 +74,7 @@ export function deletePatient(id) {
   return async (dispatch) => {
     dispatch(deletePatientsRequest());
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/${id}`, {
+      const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients/${id}`, {
         method: 'delete',
       });
       await response.text();
@@ -117,7 +118,7 @@ export function addPatient(patient) {
 
     dispatch(addPatientsRequest());
     try {
-      const response = await fetch('http://localhost:5000/api/patients', {
+      const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients`, {
         method: 'post',
         headers: {
           Accept: 'application/json',
@@ -164,7 +165,7 @@ export function updatePatient(patient) {
   return async (dispatch) => {
     dispatch(updatePatientsRequest());
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/${patient._id}`, {
+      const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients/${patient._id}`, {
         method: 'put',
         headers: {
           Accept: 'application/json',
