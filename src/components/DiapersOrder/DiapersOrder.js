@@ -58,7 +58,7 @@ export default class DiapersOrder extends Component {
     });
 
     headerContent.unshift(
-      <TableHeaderColumn>Résident</TableHeaderColumn>
+      <TableHeaderColumn key={'header-' + diapersHeader.length}>Résident</TableHeaderColumn>
     );
 
     return (
@@ -89,7 +89,7 @@ export default class DiapersOrder extends Component {
 
         return (
           <TableRowColumn
-            key={dIndex}>
+            key={'body' + dIndex}>
             {diaperAmount > 0 ? diaperAmount : ''}
           </TableRowColumn>
         );
