@@ -26,8 +26,8 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-@Radium
 @connect(mapStateToProps, mapDispatchToProps)
+@Radium
 export default class ExportPage extends Component {
   static propTypes = {
     patients: PropTypes.object.isRequired,

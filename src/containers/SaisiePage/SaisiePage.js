@@ -30,8 +30,8 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-@Radium
 @connect(mapStateToProps, mapDispatchToProps)
+@Radium
 export default class SaisiePage extends Component {
 
   static propTypes = {
