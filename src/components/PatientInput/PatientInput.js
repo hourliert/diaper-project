@@ -32,8 +32,18 @@ export default class PatientInput extends Component {
     return (
       <form
         className="layout horizontal around-justified"
-        onSubmit={onSubmit}
-        onReset={onReset}>
+        onSubmit={
+          (e) => {
+            e.preventDefault();
+            onSubmit(patient);
+          }
+        }
+        onReset={
+          (e) => {
+            e.preventDefault();
+            onReset();
+          }
+        }>
         <TextField
           type="text"
           hintText="Prénom"

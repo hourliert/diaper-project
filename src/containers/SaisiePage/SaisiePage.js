@@ -32,8 +32,6 @@ function mapDispatchToProps(dispatch) {
 export default class SaisiePage extends Component {
 
   static propTypes = {
-    patients: PropTypes.object.isRequired,
-
     editedPatient: PropTypes.object.isRequired,
 
     setPatient: PropTypes.func.isRequired,
@@ -43,14 +41,16 @@ export default class SaisiePage extends Component {
     updatePatientField: PropTypes.func.isRequired,
     updatePatientDiaperField: PropTypes.func.isRequired,
 
-    fetchPatients: PropTypes.func.isRequired,
+    patients: PropTypes.object.isRequired,
+
     addPatient: PropTypes.func.isRequired,
     updatePatient: PropTypes.func.isRequired,
     deletePatient: PropTypes.func.isRequired,
   }
 
   render() {
-    const { editedPatient, updatePatient, addPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
+    const { patients, updatePatient, addPatient, deletePatient } = this.props;
+    const { editedPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
 
     return (
       <CardsList>
@@ -63,7 +63,7 @@ export default class SaisiePage extends Component {
             patient={editedPatient}
             onSubmit={
               (patient) => {
-                [patient._id ? updatePatient.name : addPatient.name](patient);
+                (patient._id ? updatePatient : addPatient)(patient);
               }
             }
             onReset={unsetPatient}
@@ -85,6 +85,14 @@ export default class SaisiePage extends Component {
             title="Visualisation"
             subtitle="Liste des couches utilisées pour chaque résident"
             avatar={<Avatar>2</Avatar>}/>
+          <PatientsTable
+            patients={patients.data}
+            onEditRow={setPatient}
+            onDeleteRow={
+              (patient) => {
+                deletePatient(patient._id);
+              }
+            }/>
         </Card>
       </CardsList>
     );

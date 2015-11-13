@@ -3,10 +3,10 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 export default class PatientsTable extends Component {
   static propTypes = {
-    fetchPatients: PropTypes.func.isRequired,
-    deletePatient: PropTypes.func.isRequired,
-    editPatient: PropTypes.func.isRequired,
-    patients: PropTypes.any.isRequired,
+    patients: PropTypes.object.isRequired,
+
+    onEditRow: PropTypes.func.isRequired,
+    onDeleteRow: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -14,7 +14,7 @@ export default class PatientsTable extends Component {
   }
 
   render() {
-    const { deletePatient, editPatient, patients } = this.props;
+    const { patients, onEditRow, onDeleteRow } = this.props;
 
     const header = (
       <TableHeader
@@ -30,7 +30,7 @@ export default class PatientsTable extends Component {
       </TableHeader>
     );
 
-    const bodyData = patients.data.map((patient, indexPatient) => {
+    const bodyData = patients.map((patient, indexPatient) => {
       const diaperTypes = patient.diapers.map((diaper, indexDiaper) => {
         return (
           <li key={indexDiaper}>{diaper.type}</li>
@@ -61,11 +61,11 @@ export default class PatientsTable extends Component {
               <RaisedButton
                 label="Editer"
                 secondary
-                onClick={editPatient.bind(this, patient)}/>
+                onClick={onEditRow.bind(this, patient)}/>
               <RaisedButton
                 label="Supprimer"
                 primary
-                onClick={deletePatient.bind(this, patient._id)}/>
+                onClick={onDeleteRow.bind(this, patient)}/>
             </div>
           </TableRowColumn>
         </TableRow>
