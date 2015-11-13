@@ -3,8 +3,8 @@ import { TextField, Table, TableBody, TableHeader, TableFooter, TableHeaderColum
 
 export default class DiapersOrder extends Component {
   static propTypes = {
-    patients: PropTypes.object.isRequired,
-    fetchPatients: PropTypes.func.isRequired,
+    patients: PropTypes.array.isRequired,
+    onMount: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -15,12 +15,12 @@ export default class DiapersOrder extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchPatients();
+    this.props.onMount();
   }
 
   _formatDiapers(patients) {
     const diapers = {};
-    patients.data.forEach((patient) => {
+    patients.forEach((patient) => {
       patient.diapers.forEach((diaper) => {
         diapers[diaper.type] = diapers[diaper.type] || 0;
         diapers[diaper.type] += parseInt(diaper.amount, 10);
@@ -62,7 +62,7 @@ export default class DiapersOrder extends Component {
   }
 
   _computeBody(diapersHeader, patients) {
-    const bodyContent = patients.data.map((patient, pIndex) => {
+    const bodyContent = patients.map((patient, pIndex) => {
       const diaperColumns = diapersHeader.map((diaperType, dIndex) => {
         const diaperAmount = this._findDiaperForType(patient, diaperType);
 
