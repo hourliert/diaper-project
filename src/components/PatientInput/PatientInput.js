@@ -11,163 +11,89 @@ const diaperTypes = [
 
 export default class PatientInput extends Component {
   static propTypes = {
-    addPatient: PropTypes.func.isRequired,
-    editPatient: PropTypes.func.isRequired,
-    updatePatient: PropTypes.func.isRequired,
-    cancelEdition: PropTypes.func.isRequired,
-    editedPatient: PropTypes.any.isRequired,
+    patient: PropTypes.object.isRequired,
+
+    onSubmit: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired,
+
+    onAddFields: PropTypes.func.isRequired,
+    onRemoveFields: PropTypes.func.isRequired,
+    onFieldChange: PropTypes.func.isRequired,
+    onDiaperChange: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      firstName: '',
-      lastName: '',
-      diapers: [{}],
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { editedPatient } = nextProps;
-    this._mapPropsToState(editedPatient);
-    return true;
-  }
-
-  _handleAddDiaper() {
-    const diapers = this.state.diapers.slice();
-    diapers.push({});
-    this.setState({ diapers });
-  }
-
-  _handleDeleteDiaper(index) {
-    const diapers = this.state.diapers.slice();
-    diapers.splice(index, 1);
-    this.setState({ diapers });
-  }
-
-  _handleChange(key, e) {
-    this.setState({
-      [key]: e.target.value,
-    });
-  }
-
-  _handleDiaperChange(index, key, e) {
-    const diapers = this.state.diapers.slice();
-
-    diapers[index][key] = e.target.value;
-
-    this.setState({ diapers });
-  }
-
-  _handleSubmit(e) {
-    e.preventDefault();
-
-    if (this.state._id) {
-      this.props.updatePatient(this.state);
-      this.props.editPatient(this.state);
-    } else {
-      this.props.addPatient(this.state);
-    }
-
-    // todo: handle errors
-    this.state = {
-      firstName: '',
-      lastName: '',
-      diapers: [{}],
-    };
-  }
-
-  _mapPropsToState(patient) {
-    if (!patient._id) {
-      this.state = {
-        firstName: '',
-        lastName: '',
-        diapers: [{}],
-      };
-    } else {
-      this.setState({
-        ...patient,
-      });
-    }
   }
 
   render() {
-    const { cancelEdition } = this.props;
-    const couches = [];
-
-    const cancelEditionButton = this.state._id ? (
-      <RaisedButton
-        label="Annuler"
-        onClick={cancelEdition.bind(this)}/>
-    ) : undefined;
-
-    this.state.diapers.forEach((diaper, index) => {
-      let removeButton;
-      if (index > 0) {
-        removeButton = (
-          <div>
-            <FloatingActionButton
-              mini
-              onClick={this._handleDeleteDiaper.bind(this, index)}>
-              <i className="material-icons">remove_circle_outline</i>
-            </FloatingActionButton>
-          </div>
-        );
-      }
-
-      couches.push(
-        <div key={index} className="layout horizontal">
-          <SelectField
-            value={diaper.type}
-            onChange={this._handleDiaperChange.bind(this, index, 'type')}
-            hintText="Type de couche"
-            valueMember="text"
-            displayMember="text"
-            menuItems={diaperTypes} />
-
-          <TextField
-            type="text"
-            hintText="Quantité"
-            value={diaper.amount}
-            onChange={this._handleDiaperChange.bind(this, index, 'amount')}/>
-
-          {removeButton}
-
-        </div>
-      );
-    });
+    const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onFieldChange, onDiaperChange} = this.props;
 
     return (
       <form
         className="layout horizontal around-justified"
-        onSubmit={this._handleSubmit.bind(this)}>
+        onSubmit={onSubmit}
+        onReset={onReset}>
         <TextField
           type="text"
           hintText="Prénom"
-          value={this.state.firstName}
-          onChange={this._handleChange.bind(this, 'firstName')}/>
+          value={patient.firstName}
+          onChange={onFieldChange.bind(null, 'firstName')}/>
         <TextField
           type="text"
           hintText="Nom"
-          value={this.state.lastName}
-          onChange={this._handleChange.bind(this, 'lastName')}/>
+          value={patient.lastName}
+          onChange={onFieldChange.bind(null, 'lastName')}/>
 
         <div className="layout vertical">
-          {couches}
+          {
+            patient.diapers.map((diaper, index) => {
+              return (
+                <div key={index} className="layout horizontal">
+                  <SelectField
+                    value={diaper.type}
+                    onChange={onDiaperChange.bind(null, index, 'type')}
+                    hintText="Type de couche"
+                    valueMember="text"
+                    displayMember="text"
+                    menuItems={diaperTypes} />
+
+                  <TextField
+                    type="text"
+                    hintText="Quantité"
+                    value={diaper.amount}
+                    onChange={onDiaperChange.bind(null, index, 'amount')}/>
+
+                  {index > 0 ?
+                    <div>
+                      <FloatingActionButton
+                        mini
+                        onClick={onRemoveFields.bind(this, index)}>
+                        <i className="material-icons">remove_circle_outline</i>
+                      </FloatingActionButton>
+                    </div>
+                  : null}
+
+                </div>
+              );
+            })
+          }
         </div>
 
         <div>
           <FloatingActionButton
             mini
             className="fab-button"
-            onClick={this._handleAddDiaper.bind(this)}>
+            onClick={onAddFields}>
             <i className="material-icons">add_circle_outline</i>
           </FloatingActionButton>
         </div>
 
-        {cancelEditionButton}
         <RaisedButton
-          label={this.state._id ? 'Enregistrer' : 'Ajouter'}
+          label="Annuler"
+          type="reset"/>
+        <RaisedButton
+          label="Enregistrer"
           type="submit"/>
       </form>
     );
