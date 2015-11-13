@@ -32,8 +32,7 @@
   "scripts": {
     "test": "jest",
     "build": "gulp bundle",
-    "start": "gulp serve",
-    "postinstall": "gulp bundle && babel-node ./scripts/install.js"
+    "start": "gulp serve"
   },
   "dependencies": {
     "body-parser": "^1.14.1",
@@ -95,8 +94,5 @@
     "webpack": "^1.9.11",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.2.0"
-  },
-  "optionalDependencies": {
-    "node-windows": "*"
   }
 }

@@ -14,6 +14,8 @@ export const FETCH_PATIENTS_FAILURE = 'FETCH_PATIENTS_FAILURE';
 function fetchPatientsFailure() {
   return {
     type: FETCH_PATIENTS_FAILURE,
+    payload: new Error('Error'),
+    error: true,
   };
 }
 
@@ -56,6 +58,8 @@ export const DELETE_PATIENTS_FAILURE = 'DELETE_PATIENTS_FAILURE';
 function deletePatientsFailure() {
   return {
     type: DELETE_PATIENTS_FAILURE,
+    payload: new Error('Error'),
+    error: true,
   };
 }
 
@@ -98,6 +102,8 @@ export const ADD_PATIENTS_FAILURE = 'ADD_PATIENTS_FAILURE';
 function addPatientsFailure() {
   return {
     type: ADD_PATIENTS_FAILURE,
+    payload: new Error('Error'),
+    error: true,
   };
 }
 
@@ -147,6 +153,8 @@ export const UPDATE_PATIENTS_FAILURE = 'UPDATE_PATIENTS_FAILURE';
 function updatePatientsFailure() {
   return {
     type: UPDATE_PATIENTS_FAILURE,
+    payload: new Error('Error'),
+    error: true,
   };
 }
 
