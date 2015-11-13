@@ -1,29 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
 
-import * as PatientsAction from '../../actions/patients';
-import * as EditedPatient from '../../actions/editedPatient';
-
-function mapStateToProps(state) {
-  return {
-    editedPatient: state.editedPatient,
-    patients: state.patients,
-  };
-}
-
-/**
- * These actions are used to dispatch an action to the redux store.
- */
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    ...EditedPatient,
-    ...PatientsAction,
-  }, dispatch);
-}
-
-@connect(mapStateToProps, mapDispatchToProps)
 export default class PatientsTable extends Component {
   static propTypes = {
     fetchPatients: PropTypes.func.isRequired,

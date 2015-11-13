@@ -1,10 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { TextField, SelectField, FloatingActionButton, RaisedButton } from 'material-ui';
-
-import * as PatientsAction from '../../actions/patients';
-import * as EditedPatient from '../../actions/editedPatient';
 
 const diaperTypes = [
    { text: 'Couche 1' },
@@ -14,25 +9,6 @@ const diaperTypes = [
    { text: 'Couche 5' },
 ];
 
-function mapStateToProps(state) {
-  return {
-    editedPatient: state.editedPatient,
-    patients: state.patients,
-  };
-}
-
-/**
- * We bind actions to the component props.
- * These actions are used to dispatch an action to the redux store.
- */
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    ...EditedPatient,
-    ...PatientsAction,
-  }, dispatch);
-}
-
-@connect(mapStateToProps, mapDispatchToProps)
 export default class PatientInput extends Component {
   static propTypes = {
     addPatient: PropTypes.func.isRequired,
