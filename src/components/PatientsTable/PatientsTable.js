@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Table, TableBody, TableHeader } from 'material-ui';
 
-import TableHeadersList from '../TableHeadersList';
+import TableHeaderLabelsList from '../TableHeaderLabelsList';
 import PatientsTableRow from '../PatientsTableRow';
 
 export default class PatientsTable extends Component {
@@ -20,34 +20,32 @@ export default class PatientsTable extends Component {
     const { patients, onEditRow, onDeleteRow } = this.props;
 
     return (
-      <div className="layout vertical center-center">
-        <Table
-          selectable={false}>
+      <Table
+        selectable={false}>
 
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}>
-            <TableHeadersList
-              headers={['Prénom', 'Nom', 'Types de couches', 'Quantités', '']}/>
-          </TableHeader>
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}>
+          <TableHeaderLabelsList
+            headers={['Prénom', 'Nom', 'Types de couches', 'Quantités', '']}/>
+        </TableHeader>
 
-          <TableBody
-            displayRowCheckbox={false}
-            stripedRows>
-            {
-              patients.map((patient, index) => {
-                return (
-                  <PatientsTableRow
-                    key={index}
-                    patient={patient}
-                    onEditRow={onEditRow}
-                    onDeleteRow={onDeleteRow} />
-                );
-              })
-            }
-          </TableBody>
-        </Table>
-      </div>
+        <TableBody
+          displayRowCheckbox={false}
+          stripedRows>
+          {
+            patients.map((patient, index) => {
+              return (
+                <PatientsTableRow
+                  key={index}
+                  patient={patient}
+                  onEditRow={onEditRow}
+                  onDeleteRow={onDeleteRow} />
+              );
+            })
+          }
+        </TableBody>
+      </Table>
     );
   }
 }

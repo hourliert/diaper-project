@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { TextField, TableRow, TableRowColumn } from 'material-ui';
 
-export default class DiapersTableFooter extends Component {
+export default class DiapersTableFooterRow extends Component {
   static propTypes = {
     diapers: PropTypes.object.isRequired,
   }

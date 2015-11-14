@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { TableRow, TableHeaderColumn } from 'material-ui';
 
-export default class TableHeadersList extends Component {
+export default class TableHeaderLabelsList extends Component {
   static propTypes = {
     headers: PropTypes.array.isRequired,
   };

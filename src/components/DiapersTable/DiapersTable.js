@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableFooter } from 'material-ui';
 
-import TableHeadersList from '../TableHeadersList';
+import TableHeaderLabelsList from '../TableHeaderLabelsList';
 import DiapersTableRow from '../DiapersTableRow';
-import DiapersTableFooter from '../DiapersTableFooter';
+import DiapersTableFooterRow from '../DiapersTableFooterRow';
 
 export default class DiapersTable extends Component {
   static propTypes = {
@@ -39,41 +39,39 @@ export default class DiapersTable extends Component {
     const diapersHeader = Object.keys(diapers);
 
     return (
-      <div className="layout vertical center-center">
-        <Table
-          selectable={false}>
+      <Table
+        selectable={false}>
 
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}>
-            <TableHeadersList
-              headers={
-                ['Résident'].concat(diapersHeader)
-              }/>
-          </TableHeader>
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}>
+          <TableHeaderLabelsList
+            headers={
+              ['Résident'].concat(diapersHeader)
+            }/>
+        </TableHeader>
 
-          <TableBody
-            displayRowCheckbox={false}
-            stripedRows>
-            {
-              patients.map((patient, index) => {
-                return (
-                  <DiapersTableRow
-                    key={index}
-                    patient={patient}
-                    diapersTypes={diapersHeader} />
-                );
-              })
-            }
-          </TableBody>
+        <TableBody
+          displayRowCheckbox={false}
+          stripedRows>
+          {
+            patients.map((patient, index) => {
+              return (
+                <DiapersTableRow
+                  key={index}
+                  patient={patient}
+                  diapersTypes={diapersHeader} />
+              );
+            })
+          }
+        </TableBody>
 
-          <TableFooter
-            adjustForCheckbox={false}>
-            <DiapersTableFooter
-              diapers={diapers}/>
-          </TableFooter>
-        </Table>
-      </div>
+        <TableFooter
+          adjustForCheckbox={false}>
+          <DiapersTableFooterRow
+            diapers={diapers}/>
+        </TableFooter>
+      </Table>
     );
   }
 }
