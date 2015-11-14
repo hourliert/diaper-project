@@ -4,7 +4,9 @@ import {
   ADD_PATIENT_DIAPER,
   REMOVE_PATIENT_DIAPER,
   UPDATE_PATIENT_FIELD,
+  UPDATE_PATIENT_FIELD_ERROR,
   UPDATE_PATIENT_DIAPER_FIELD,
+  UPDATE_PATIENT_DIAPER_FIELD_ERROR,
 } from '../constants';
 import { createReducer } from './reducerCreator';
 
@@ -46,6 +48,15 @@ export default createReducer({ diapers: [{}] }, {
     return {
       ...state,
       [action.payload.field]: action.payload.value,
+      [`${action.payload.field}Error`]: '',
+    };
+  },
+
+  [UPDATE_PATIENT_FIELD_ERROR](state, action) {
+    return {
+      ...state,
+      [action.meta.field]: action.meta.value,
+      [`${action.meta.field}Error`]: action.payload.message,
     };
   },
 
@@ -57,6 +68,24 @@ export default createReducer({ diapers: [{}] }, {
           return {
             ...diaper,
             [action.payload.field]: action.payload.value,
+            [`${action.payload.field}Error`]: '',
+          };
+        }
+
+        return { ...diaper };
+      }),
+    };
+  },
+
+  [UPDATE_PATIENT_DIAPER_FIELD_ERROR](state, action) {
+    return {
+      ...state,
+      diapers: state.diapers.map((diaper, index) => {
+        if (index === action.meta.index) {
+          return {
+            ...diaper,
+            [action.meta.field]: action.meta.value,
+            [`${action.meta.field}Error`]: action.payload.message,
           };
         }
 

@@ -47,11 +47,13 @@ export default class PatientInput extends Component {
         <TextField
           type="text"
           hintText="Prénom"
+          errorText={patient.firstNameError}
           value={patient.firstName}
           onChange={onFieldChange.bind(null, 'firstName')}/>
         <TextField
           type="text"
           hintText="Nom"
+          errorText={patient.lastNameError}
           value={patient.lastName}
           onChange={onFieldChange.bind(null, 'lastName')}/>
 
@@ -64,6 +66,7 @@ export default class PatientInput extends Component {
                     value={diaper.type}
                     onChange={onDiaperChange.bind(null, index, 'type')}
                     hintText="Type de couche"
+                    errorText={diaper.typeError}
                     valueMember="text"
                     displayMember="text"
                     menuItems={diaperTypes} />
@@ -71,6 +74,7 @@ export default class PatientInput extends Component {
                   <TextField
                     type="text"
                     hintText="Quantité"
+                    errorText={diaper.amountError}
                     value={diaper.amount}
                     onChange={onDiaperChange.bind(null, index, 'amount')}/>
 

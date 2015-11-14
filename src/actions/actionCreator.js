@@ -8,8 +8,13 @@ export function createActionCreator(type, actionCreator, metaCreator) {
   };
 }
 
-export function createErrorCreator(type) {
-  return function(errorMessage) {
-    return { type, error: true, payload: new Error(errorMessage) };
+export function createErrorCreator(type, metaCreator) {
+  return function(errorMessage, ...args) {
+    return {
+      type,
+      error: true,
+      payload: new Error(errorMessage),
+      meta: metaCreator ? metaCreator(...args) : null,
+    };
   };
 }

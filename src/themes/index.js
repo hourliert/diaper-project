@@ -4,7 +4,7 @@ export default {
   spacing: Styles.Spacing,
   fontFamily: 'Roboto, sans-serif',
   palette: {
-    primary1Color: Styles.Colors.blue500,
+    primary1Color: Styles.Colors.green500,
     primary2Color: Styles.Colors.blue700,
     primary3Color: Styles.Colors.grey400,
     accent1Color: Styles.Colors.redA200,
