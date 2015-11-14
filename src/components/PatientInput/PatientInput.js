@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { TextField, SelectField, FloatingActionButton, RaisedButton } from 'material-ui';
+
+import PatientForm from '../PatientForm';
 
 const diaperTypes = [
    { text: 'Couche 1' },
@@ -26,90 +27,58 @@ export default class PatientInput extends Component {
     super(props);
   }
 
+  _convertPatientToForm(patient) {
+    const { firstName, lastName, diapers } = patient;
+    const res = {
+      firstName,
+      lastName,
+      ...(Object.assign({}, ...diapers.map((diaper, index) => {
+        return {
+          [`diapers.${index}.type`]: diaper.type,
+          [`diapers.${index}.amount`]: diaper.amount,
+        };
+      }))),
+    };
+
+    return res;
+  }
+
+  _convertFormToPatient(form) {
+    const { firstName, lastName, ...splitedDiapers } = form;
+    const diaperKeys = Object.keys(splitedDiapers);
+    const diapers = [];
+
+    for (let i = 0, ii = diaperKeys.length; i < ii; i += 2) {
+      diapers.push({
+        type: splitedDiapers[diaperKeys[i]],
+        amount: splitedDiapers[diaperKeys[i + 1]],
+      });
+    }
+
+    return {
+      firstName,
+      lastName,
+      diapers,
+    };
+  }
+
   render() {
     const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onFieldChange, onDiaperChange} = this.props;
 
+    const initialValues = this._convertPatientToForm(patient);
+
     return (
-      <form
-        className="layout horizontal around-justified"
+      <PatientForm
+        fields={Object.keys(initialValues)}
+        initialValues={initialValues}
+        onAddFields={onAddFields}
+        onRemoveFields={onRemoveFields}
+        onReset={onReset}
         onSubmit={
           (e) => {
-            e.preventDefault();
-            onSubmit(patient);
+            this._convertFormToPatient(e);
           }
-        }
-        onReset={
-          (e) => {
-            e.preventDefault();
-            onReset();
-          }
-        }>
-        <TextField
-          type="text"
-          hintText="Prénom"
-          errorText={patient.firstNameError}
-          value={patient.firstName}
-          onChange={onFieldChange.bind(null, 'firstName')}/>
-        <TextField
-          type="text"
-          hintText="Nom"
-          errorText={patient.lastNameError}
-          value={patient.lastName}
-          onChange={onFieldChange.bind(null, 'lastName')}/>
-
-        <div className="layout vertical">
-          {
-            patient.diapers.map((diaper, index) => {
-              return (
-                <div key={index} className="layout horizontal">
-                  <SelectField
-                    value={diaper.type}
-                    onChange={onDiaperChange.bind(null, index, 'type')}
-                    hintText="Type de couche"
-                    errorText={diaper.typeError}
-                    valueMember="text"
-                    displayMember="text"
-                    menuItems={diaperTypes} />
-
-                  <TextField
-                    type="text"
-                    hintText="Quantité"
-                    errorText={diaper.amountError}
-                    value={diaper.amount}
-                    onChange={onDiaperChange.bind(null, index, 'amount')}/>
-
-                  {index > 0 ?
-                    <div>
-                      <FloatingActionButton
-                        mini
-                        onClick={onRemoveFields.bind(this, index)}>
-                        <i className="material-icons">remove_circle_outline</i>
-                      </FloatingActionButton>
-                    </div>
-                  : null}
-
-                </div>
-              );
-            })
-          }
-        </div>
-
-        <div>
-          <FloatingActionButton
-            mini
-            className="fab-button"
-            onClick={onAddFields}>
-            <i className="material-icons">add_circle_outline</i>
-          </FloatingActionButton>
-        </div>
-
-        <RaisedButton
-          label="Annuler"
-          type="reset"/>
-        <RaisedButton
-          label="Enregistrer"
-          type="submit"/>
-      </form>
+        }/>
     );
   }
 }
