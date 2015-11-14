@@ -29,28 +29,6 @@ export default class DiapersOrder extends Component {
     return diapers;
   }
 
-  _computeHeader(diapersHeader) {
-    const headerContent = diapersHeader.map((diaperType, index) => {
-      return (
-        <TableHeaderColumn key={'header-' + index}>{diaperType}</TableHeaderColumn>
-      );
-    });
-
-    headerContent.unshift(
-      <TableHeaderColumn key={'header-' + diapersHeader.length}>Résident</TableHeaderColumn>
-    );
-
-    return (
-      <TableHeader
-        displaySelectAll={false}
-        adjustForCheckbox={false}>
-        <TableRow>
-          {headerContent}
-        </TableRow>
-      </TableHeader>
-    );
-  }
-
   _findDiaperForType(patient, diaperType) {
     let res = 0;
     patient.diapers.forEach((diaper) => {
@@ -61,75 +39,10 @@ export default class DiapersOrder extends Component {
     return res;
   }
 
-  _computeBody(diapersHeader, patients) {
-    const bodyContent = patients.map((patient, pIndex) => {
-      const diaperColumns = diapersHeader.map((diaperType, dIndex) => {
-        const diaperAmount = this._findDiaperForType(patient, diaperType);
-
-        return (
-          <TableRowColumn
-            key={'body' + dIndex}>
-            {diaperAmount > 0 ? diaperAmount : ''}
-          </TableRowColumn>
-        );
-      });
-
-      return (
-        <TableRow
-          key={pIndex}>
-          <TableRowColumn>
-            {patient.firstName} {patient.lastName}
-          </TableRowColumn>
-          {diaperColumns}
-        </TableRow>
-      );
-    });
-
-    return (
-      <TableBody
-        displayRowCheckbox={false}
-        stripedRows>
-        {bodyContent}
-      </TableBody>
-    );
-  }
-
   _handleMutliplierChange(e) {
     this.setState({
       multiplier: e.target.value,
     });
-  }
-
-  _computeFooter(diapersHeader, diapers) {
-    const footerContent = diapersHeader.map((header, index) => {
-      const total = (parseInt(this.state.multiplier, 10) || 1) * parseInt(diapers[header], 10);
-
-      return (
-        <TableRowColumn key={index}>
-          {total}
-        </TableRowColumn>
-      );
-    });
-
-    return (
-      <TableFooter
-        adjustForCheckbox={false}>
-        <TableRow>
-          <TableRowColumn>
-            <div className="layout horizontal center-center">
-              <div className="flex-1">Total</div>
-              <TextField
-                className="flex-1"
-                value={this.state.multiplier}
-                hintText="Nombre"
-                floatingLabelText="Multiplieur"
-                onChange={this._handleMutliplierChange.bind(this)}/>
-            </div>
-          </TableRowColumn>
-          {footerContent}
-        </TableRow>
-      </TableFooter>
-    );
   }
 
   render() {
@@ -141,9 +54,86 @@ export default class DiapersOrder extends Component {
       <div className="layout vertical center-center">
         <Table
           selectable={false}>
-          {this._computeHeader(diapersHeader)}
-          {this._computeBody(diapersHeader, patients)}
-          {this._computeFooter(diapersHeader, diapers)}
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}>
+            <TableRow>
+              {
+                [].concat([
+                  <TableHeaderColumn
+                    key={'header-cell-' + diapersHeader.length}>
+                    Résident
+                  </TableHeaderColumn>,
+                ], diapersHeader.map((diaperType, index) => {
+                  return (
+                    <TableHeaderColumn
+                      key={'header-cell-' + index}>
+                      {diaperType}
+                    </TableHeaderColumn>
+                  );
+                }))
+              }
+            </TableRow>
+          </TableHeader>
+
+          <TableBody
+            displayRowCheckbox={false}
+            stripedRows>
+            {
+              patients.map((patient, pIndex) => {
+                return (
+                  <TableRow
+                    key={'body-row' + pIndex}>
+                    <TableRowColumn>
+                      {patient.firstName} {patient.lastName}
+                    </TableRowColumn>
+                    {
+                      diapersHeader.map((diaperType, dIndex) => {
+                        const diaperAmount = this._findDiaperForType(patient, diaperType);
+
+                        return (
+                          <TableRowColumn
+                            key={'body-cell-' + dIndex}>
+                            {diaperAmount > 0 ? diaperAmount : ''}
+                          </TableRowColumn>
+                        );
+                      })
+                    }
+                  </TableRow>
+                );
+              })
+            }
+          </TableBody>
+
+          <TableFooter
+            adjustForCheckbox={false}>
+            { patients.length ?
+              <TableRow>
+                <TableRowColumn>
+                  <div className="layout horizontal center-center">
+                    <div className="flex-1">Total</div>
+                    <TextField
+                      className="flex-1"
+                      value={this.state.multiplier}
+                      hintText="Nombre"
+                      floatingLabelText="Multiplieur"
+                      onChange={this._handleMutliplierChange.bind(this)}/>
+                  </div>
+                </TableRowColumn>
+                {
+                  diapersHeader.map((header, index) => {
+                    const total = (parseInt(this.state.multiplier, 10) || 1) * parseInt(diapers[header], 10);
+
+                    return (
+                      <TableRowColumn key={index}>
+                        {total}
+                      </TableRowColumn>
+                    );
+                  })
+                }
+              </TableRow>
+            : null }
+          </TableFooter>
         </Table>
       </div>
     );
