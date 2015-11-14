@@ -23,6 +23,7 @@ export default class PatientsTable extends Component {
       <div className="layout vertical center-center">
         <Table
           selectable={false}>
+
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}>

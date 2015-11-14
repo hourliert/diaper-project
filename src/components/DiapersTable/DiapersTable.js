@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { TextField, Table, TableBody, TableHeader, TableFooter, TableRow, TableRowColumn } from 'material-ui';
+import { Table, TableBody, TableHeader, TableFooter } from 'material-ui';
 
 import TableHeadersList from '../TableHeadersList';
+import DiapersTableRow from '../DiapersTableRow';
+import DiapersTableFooter from '../DiapersTableFooter';
 
 export default class DiapersTable extends Component {
   static propTypes = {
@@ -31,22 +33,6 @@ export default class DiapersTable extends Component {
     return diapers;
   }
 
-  _findDiaperForType(patient, diaperType) {
-    let res = 0;
-    patient.diapers.forEach((diaper) => {
-      if (diaper.type === diaperType) {
-        res = diaper.amount;
-      }
-    });
-    return res;
-  }
-
-  _handleMutliplierChange(e) {
-    this.setState({
-      multiplier: e.target.value,
-    });
-  }
-
   render() {
     const { patients } = this.props;
     const diapers = this._formatDiapers(patients);
@@ -56,6 +42,7 @@ export default class DiapersTable extends Component {
       <div className="layout vertical center-center">
         <Table
           selectable={false}>
+
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}>
@@ -69,26 +56,12 @@ export default class DiapersTable extends Component {
             displayRowCheckbox={false}
             stripedRows>
             {
-              patients.map((patient, pIndex) => {
+              patients.map((patient, index) => {
                 return (
-                  <TableRow
-                    key={'body-row' + pIndex}>
-                    <TableRowColumn>
-                      {patient.firstName} {patient.lastName}
-                    </TableRowColumn>
-                    {
-                      diapersHeader.map((diaperType, dIndex) => {
-                        const diaperAmount = this._findDiaperForType(patient, diaperType);
-
-                        return (
-                          <TableRowColumn
-                            key={'body-cell-' + dIndex}>
-                            {diaperAmount > 0 ? diaperAmount : ''}
-                          </TableRowColumn>
-                        );
-                      })
-                    }
-                  </TableRow>
+                  <DiapersTableRow
+                    key={index}
+                    patient={patient}
+                    diapersTypes={diapersHeader} />
                 );
               })
             }
@@ -96,32 +69,8 @@ export default class DiapersTable extends Component {
 
           <TableFooter
             adjustForCheckbox={false}>
-            { patients.length ?
-              <TableRow>
-                <TableRowColumn>
-                  <div className="layout horizontal center-center">
-                    <div className="flex-1">Total</div>
-                    <TextField
-                      className="flex-1"
-                      value={this.state.multiplier}
-                      hintText="Nombre"
-                      floatingLabelText="Multiplieur"
-                      onChange={this._handleMutliplierChange.bind(this)}/>
-                  </div>
-                </TableRowColumn>
-                {
-                  diapersHeader.map((header, index) => {
-                    const total = (parseInt(this.state.multiplier, 10) || 1) * parseInt(diapers[header], 10);
-
-                    return (
-                      <TableRowColumn key={index}>
-                        {total}
-                      </TableRowColumn>
-                    );
-                  })
-                }
-              </TableRow>
-            : null }
+            <DiapersTableFooter
+              diapers={diapers}/>
           </TableFooter>
         </Table>
       </div>

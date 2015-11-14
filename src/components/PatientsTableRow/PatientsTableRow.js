@@ -3,7 +3,7 @@ import { TableRow, TableRowColumn, RaisedButton } from 'material-ui';
 
 export default class PatientsTableRow extends Component {
   static propTypes = {
-    striped: PropTypes.boolean,
+    striped: PropTypes.any,
     patient: PropTypes.object.isRequired,
     onEditRow: PropTypes.func.isRequired,
     onDeleteRow: PropTypes.func.isRequired,
