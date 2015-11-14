@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
 import patients from './patients';
-import editedPatient from './editedPatient';
+import patientForm from './patientForm';
 
 const rootReducer = combineReducers({
   patients,
-  editedPatient,
+  patientForm,
   router: routerStateReducer,
 });
 

@@ -1,31 +1,26 @@
 import {
   FETCH_PATIENTS_REQUEST,
   FETCH_PATIENTS_SUCCESS,
-  DELETE_PATIENTS_REQUEST,
-  DELETE_PATIENTS_SUCCESS,
-  ADD_PATIENTS_REQUEST,
-  ADD_PATIENTS_SUCCESS,
-  UPDATE_PATIENTS_REQUEST,
-  UPDATE_PATIENTS_SUCCESS,
-} from '../actions';
+  DELETE_PATIENT_REQUEST,
+  DELETE_PATIENT_SUCCESS,
+  ADD_PATIENT_REQUEST,
+  ADD_PATIENT_SUCCESS,
+  UPDATE_PATIENT_REQUEST,
+  UPDATE_PATIENT_SUCCESS,
+} from '../constants';
+import { createReducer } from './reducerCreator';
 
-/**
- * Simple reducer that translates the behavior of a counter depending on the
- * action received.
- * @param  {number} state  Counter state
- * @param  {string} action The action
- * @return {number}        New Counter state
- */
-export default function patients(state = { data: [] }, action) {
-  switch (action.type) {
-  case FETCH_PATIENTS_REQUEST:
+export default createReducer({ data: [] }, {
+  [FETCH_PATIENTS_REQUEST](state, action) {
     return {
       isFetching: true,
       data: [
         ...state.data,
       ],
     };
-  case FETCH_PATIENTS_SUCCESS:
+  },
+
+  [FETCH_PATIENTS_SUCCESS](state, action) {
     return {
       isFetching: false,
       receivedAt: action.payload.receivedAt,
@@ -33,14 +28,18 @@ export default function patients(state = { data: [] }, action) {
         ...action.payload.patients,
       ],
     };
-  case DELETE_PATIENTS_REQUEST:
+  },
+
+  [DELETE_PATIENT_REQUEST](state, action) {
     return {
       isDeleting: false,
       data: [
         ...state.data,
       ],
     };
-  case DELETE_PATIENTS_SUCCESS:
+  },
+
+  [DELETE_PATIENT_SUCCESS](state, action) {
     return {
       isDeleting: true,
       receivedAt: action.payload.receivedAt,
@@ -48,14 +47,18 @@ export default function patients(state = { data: [] }, action) {
         patient._id !== action.payload.deletedId
       ),
     };
-  case ADD_PATIENTS_REQUEST:
+  },
+
+  [ADD_PATIENT_REQUEST](state, action) {
     return {
       isAdding: true,
       data: [
         ...state.data,
       ],
     };
-  case ADD_PATIENTS_SUCCESS:
+  },
+
+  [ADD_PATIENT_SUCCESS](state, action) {
     return {
       isAdding: false,
       receivedAt: action.payload.receivedAt,
@@ -64,14 +67,18 @@ export default function patients(state = { data: [] }, action) {
         ...state.data,
       ],
     };
-  case UPDATE_PATIENTS_REQUEST:
+  },
+
+  [UPDATE_PATIENT_REQUEST](state, action) {
     return {
       isUpdating: true,
       data: [
         ...state.data,
       ],
     };
-  case UPDATE_PATIENTS_SUCCESS:
+  },
+
+  [UPDATE_PATIENT_SUCCESS](state, action) {
     return {
       isUpdating: false,
       receivedAt: action.payload.receivedAt,
@@ -81,7 +88,5 @@ export default function patients(state = { data: [] }, action) {
           patient;
       }),
     };
-  default:
-    return state;
-  }
-}
+  },
+});

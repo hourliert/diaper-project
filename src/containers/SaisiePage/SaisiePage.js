@@ -8,12 +8,12 @@ import PatientsTable from '../../components/PatientsTable';
 import PatientInput from '../../components/PatientInput';
 
 import * as PatientsAction from '../../actions/patients';
-import * as EditedPatient from '../../actions/editedPatient';
+import * as PatientFormAction from '../../actions/patientForm';
 
 function mapStateToProps(state) {
   return {
     patients: state.patients,
-    editedPatient: state.editedPatient,
+    patientForm: state.patientForm,
   };
 }
 
@@ -24,7 +24,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     ...PatientsAction,
-    ...EditedPatient,
+    ...PatientFormAction,
   }, dispatch);
 }
 
@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
 export default class SaisiePage extends Component {
 
   static propTypes = {
-    editedPatient: PropTypes.object.isRequired,
+    patientForm: PropTypes.object.isRequired,
 
     setPatient: PropTypes.func.isRequired,
     unsetPatient: PropTypes.func.isRequired,
@@ -50,7 +50,7 @@ export default class SaisiePage extends Component {
 
   render() {
     const { patients, updatePatient, addPatient, deletePatient } = this.props;
-    const { editedPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
+    const { patientForm, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
 
     return (
       <CardsList>
@@ -60,7 +60,7 @@ export default class SaisiePage extends Component {
             subtitle="Entrer un nouveau resident"
             avatar={<Avatar>1</Avatar>}/>
           <PatientInput
-            patient={editedPatient}
+            patient={patientForm}
             onSubmit={
               (patient) => {
                 (patient._id ? updatePatient : addPatient)(patient);

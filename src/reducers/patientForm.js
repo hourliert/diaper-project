@@ -5,20 +5,24 @@ import {
   REMOVE_PATIENT_DIAPER,
   UPDATE_PATIENT_FIELD,
   UPDATE_PATIENT_DIAPER_FIELD,
-} from '../actions/editedPatient';
+} from '../constants';
+import { createReducer } from './reducerCreator';
 
-export default function editedPatient(state = { diapers: [{}] }, action) {
-  switch (action.type) {
-  case SET_PATIENT:
+export default createReducer({ diapers: [{}] }, {
+  [SET_PATIENT](state, action) {
     return {
       ...action.payload,
       diapers: action.payload.diapers || [{}],
     };
-  case UNSET_PATIENT:
+  },
+
+  [UNSET_PATIENT](state, action) {
     return {
       diapers: [{}],
     };
-  case ADD_PATIENT_DIAPER:
+  },
+
+  [ADD_PATIENT_DIAPER](state, action) {
     return {
       ...state,
       diapers: [
@@ -26,7 +30,9 @@ export default function editedPatient(state = { diapers: [{}] }, action) {
         {},
       ],
     };
-  case REMOVE_PATIENT_DIAPER:
+  },
+
+  [REMOVE_PATIENT_DIAPER](state, action) {
     return {
       ...state,
       diapers: [
@@ -34,12 +40,16 @@ export default function editedPatient(state = { diapers: [{}] }, action) {
         ...state.diapers.slice(action.payload.index + 1, Infinity),
       ],
     };
-  case UPDATE_PATIENT_FIELD:
+  },
+
+  [UPDATE_PATIENT_FIELD](state, action) {
     return {
       ...state,
       [action.payload.field]: action.payload.value,
     };
-  case UPDATE_PATIENT_DIAPER_FIELD:
+  },
+
+  [UPDATE_PATIENT_DIAPER_FIELD](state, action) {
     return {
       ...state,
       diapers: state.diapers.map((diaper, index) => {
@@ -53,7 +63,5 @@ export default function editedPatient(state = { diapers: [{}] }, action) {
         return { ...diaper };
       }),
     };
-  default:
-    return state;
-  }
-}
+  },
+});

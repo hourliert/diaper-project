@@ -1,34 +1,29 @@
-import { SERVER_HOSTNAME, SERVER_PORT } from '../config';
 import fetch from 'isomorphic-fetch';
+import {
+  FETCH_PATIENTS_REQUEST,
+  FETCH_PATIENTS_FAILURE,
+  FETCH_PATIENTS_SUCCESS,
+  DELETE_PATIENT_REQUEST,
+  DELETE_PATIENT_FAILURE,
+  DELETE_PATIENT_SUCCESS,
+  ADD_PATIENT_REQUEST,
+  ADD_PATIENT_FAILURE,
+  ADD_PATIENT_SUCCESS,
+  UPDATE_PATIENT_REQUEST,
+  UPDATE_PATIENT_FAILURE,
+  UPDATE_PATIENT_SUCCESS,
+} from '../constants';
+import { SERVER_HOSTNAME, SERVER_PORT } from '../config';
+import { createActionCreator, createErrorCreator } from './actionCreator';
 
-import { editPatient } from './editedPatient';
+import { setPatient } from './patientForm';
 
-export const FETCH_PATIENTS_REQUEST = 'FETCH_PATIENTS_REQUEST';
-function fetchPatientsRequest() {
-  return {
-    type: FETCH_PATIENTS_REQUEST,
-  };
-}
-
-export const FETCH_PATIENTS_FAILURE = 'FETCH_PATIENTS_FAILURE';
-function fetchPatientsFailure() {
-  return {
-    type: FETCH_PATIENTS_FAILURE,
-    payload: new Error('Error'),
-    error: true,
-  };
-}
-
-export const FETCH_PATIENTS_SUCCESS = 'FETCH_PATIENTS_SUCCESS';
-function fetchPatientsSuccess(json) {
-  return {
-    type: FETCH_PATIENTS_SUCCESS,
-    payload: {
-      patients: json,
-      receivedAt: Date.now(),
-    },
-  };
-}
+const fetchPatientsRequest = createActionCreator(FETCH_PATIENTS_REQUEST);
+const fetchPatientsFailure = createErrorCreator(FETCH_PATIENTS_FAILURE);
+const fetchPatientsSuccess = createActionCreator(FETCH_PATIENTS_SUCCESS, (json) => ({
+  patients: json,
+  receivedAt: Date.now(),
+}));
 
 export function fetchPatients() {
   return async (dispatch) => {
@@ -47,32 +42,12 @@ export function fetchPatients() {
   };
 }
 
-export const DELETE_PATIENTS_REQUEST = 'DELETE_PATIENTS_REQUEST';
-function deletePatientsRequest() {
-  return {
-    type: DELETE_PATIENTS_REQUEST,
-  };
-}
-
-export const DELETE_PATIENTS_FAILURE = 'DELETE_PATIENTS_FAILURE';
-function deletePatientsFailure() {
-  return {
-    type: DELETE_PATIENTS_FAILURE,
-    payload: new Error('Error'),
-    error: true,
-  };
-}
-
-export const DELETE_PATIENTS_SUCCESS = 'DELETE_PATIENTS_SUCCESS';
-function deletePatientsSuccess(id) {
-  return {
-    type: DELETE_PATIENTS_SUCCESS,
-    payload: {
-      deletedId: id,
-      receivedAt: Date.now(),
-    },
-  };
-}
+const deletePatientsRequest = createActionCreator(DELETE_PATIENT_REQUEST);
+const deletePatientsFailure = createErrorCreator(DELETE_PATIENT_FAILURE);
+const deletePatientsSuccess = createActionCreator(DELETE_PATIENT_SUCCESS, (id) => ({
+  deletedId: id,
+  receivedAt: Date.now(),
+}));
 
 export function deletePatient(id) {
   return async (dispatch) => {
@@ -91,32 +66,12 @@ export function deletePatient(id) {
   };
 }
 
-export const ADD_PATIENTS_REQUEST = 'ADD_PATIENTS_REQUEST';
-function addPatientsRequest() {
-  return {
-    type: ADD_PATIENTS_REQUEST,
-  };
-}
-
-export const ADD_PATIENTS_FAILURE = 'ADD_PATIENTS_FAILURE';
-function addPatientsFailure() {
-  return {
-    type: ADD_PATIENTS_FAILURE,
-    payload: new Error('Error'),
-    error: true,
-  };
-}
-
-export const ADD_PATIENTS_SUCCESS = 'ADD_PATIENTS_SUCCESS';
-function addPatientsSuccess(json) {
-  return {
-    type: ADD_PATIENTS_SUCCESS,
-    payload: {
-      patient: json,
-      receivedAt: Date.now(),
-    },
-  };
-}
+const addPatientsRequest = createActionCreator(ADD_PATIENT_REQUEST);
+const addPatientsFailure = createErrorCreator(ADD_PATIENT_FAILURE);
+const addPatientsSuccess = createActionCreator(ADD_PATIENT_SUCCESS, (json) => ({
+  patient: json,
+  receivedAt: Date.now(),
+}));
 
 export function addPatient(patient) {
   return async (dispatch) => {
@@ -142,32 +97,12 @@ export function addPatient(patient) {
   };
 }
 
-export const UPDATE_PATIENTS_REQUEST = 'UPDATE_PATIENTS_REQUEST';
-function updatePatientsRequest() {
-  return {
-    type: UPDATE_PATIENTS_REQUEST,
-  };
-}
-
-export const UPDATE_PATIENTS_FAILURE = 'UPDATE_PATIENTS_FAILURE';
-function updatePatientsFailure() {
-  return {
-    type: UPDATE_PATIENTS_FAILURE,
-    payload: new Error('Error'),
-    error: true,
-  };
-}
-
-export const UPDATE_PATIENTS_SUCCESS = 'UPDATE_PATIENTS_SUCCESS';
-function updatePatientsSuccess(json) {
-  return {
-    type: UPDATE_PATIENTS_SUCCESS,
-    payload: {
-      patient: json,
-      receivedAt: Date.now(),
-    },
-  };
-}
+const updatePatientsRequest = createActionCreator(UPDATE_PATIENT_REQUEST);
+const updatePatientsFailure = createErrorCreator(UPDATE_PATIENT_FAILURE);
+const updatePatientsSuccess = createActionCreator(UPDATE_PATIENT_SUCCESS, (json) => ({
+  patient: json,
+  receivedAt: Date.now(),
+}));
 
 export function updatePatient(patient) {
   return async (dispatch) => {
@@ -188,6 +123,6 @@ export function updatePatient(patient) {
     }
 
     dispatch(updatePatientsSuccess(patient));
-    dispatch(editPatient(patient));
+    dispatch(setPatient(patient));
   };
 }
