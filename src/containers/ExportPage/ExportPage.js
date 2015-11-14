@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Card, CardHeader, Avatar } from 'material-ui';
 
 import CardsList from '../../components/CardsList';
-import DiapersOrder from '../../components/DiapersOrder';
+import DiapersTable from '../../components/DiapersTable';
 
 import * as PatientsAction from '../../actions/patients';
 
@@ -42,7 +42,7 @@ export default class ExportPage extends Component {
             title="Export"
             subtitle="Quantités de couches consommées"
             avatar={<Avatar>3</Avatar>}/>
-          <DiapersOrder
+          <DiapersTable
             patients={patients.data}
             onMount={fetchPatients}/>
         </Card>

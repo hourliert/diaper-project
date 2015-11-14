@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { TextField, Table, TableBody, TableHeader, TableFooter, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
+import { TextField, Table, TableBody, TableHeader, TableFooter, TableRow, TableRowColumn } from 'material-ui';
 
-export default class DiapersOrder extends Component {
+import TableHeadersList from '../TableHeadersList';
+
+export default class DiapersTable extends Component {
   static propTypes = {
     patients: PropTypes.array.isRequired,
     onMount: PropTypes.func.isRequired,
@@ -57,23 +59,10 @@ export default class DiapersOrder extends Component {
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}>
-            <TableRow>
-              {
-                [].concat([
-                  <TableHeaderColumn
-                    key={'header-cell-' + diapersHeader.length}>
-                    Résident
-                  </TableHeaderColumn>,
-                ], diapersHeader.map((diaperType, index) => {
-                  return (
-                    <TableHeaderColumn
-                      key={'header-cell-' + index}>
-                      {diaperType}
-                    </TableHeaderColumn>
-                  );
-                }))
-              }
-            </TableRow>
+            <TableHeadersList
+              headers={
+                ['Résident'].concat(diapersHeader)
+              }/>
           </TableHeader>
 
           <TableBody

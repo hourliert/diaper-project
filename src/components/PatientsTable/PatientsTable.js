@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, RaisedButton } from 'material-ui';
+import { Table, TableBody, TableHeader } from 'material-ui';
+
+import TableHeadersList from '../TableHeadersList';
+import PatientsTableRow from '../PatientsTableRow';
 
 export default class PatientsTable extends Component {
   static propTypes = {
@@ -23,60 +26,21 @@ export default class PatientsTable extends Component {
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>Prénom</TableHeaderColumn>
-              <TableHeaderColumn>Nom</TableHeaderColumn>
-              <TableHeaderColumn>Types de couches</TableHeaderColumn>
-              <TableHeaderColumn>Quantités</TableHeaderColumn>
-              <TableHeaderColumn />
-            </TableRow>
+            <TableHeadersList
+              headers={['Prénom', 'Nom', 'Types de couches', 'Quantités', '']}/>
           </TableHeader>
 
           <TableBody
             displayRowCheckbox={false}
             stripedRows>
             {
-              patients.map((patient, indexPatient) => {
+              patients.map((patient, index) => {
                 return (
-                  <TableRow
-                    key={indexPatient}>
-                    <TableRowColumn>{patient.firstName}</TableRowColumn>
-                    <TableRowColumn>{patient.lastName}</TableRowColumn>
-                    <TableRowColumn>
-                      <ul>
-                        {
-                          patient.diapers.map((diaper, indexDiaper) => {
-                            return (
-                              <li key={indexDiaper}>{diaper.type}</li>
-                            );
-                          })
-                        }
-                      </ul>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <ul>
-                        {
-                          patient.diapers.map((diaper, indexDiaper) => {
-                            return (
-                              <li key={indexDiaper}>{diaper.amount}</li>
-                            );
-                          })
-                        }
-                      </ul>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <div className="layout horizontal around-justified">
-                        <RaisedButton
-                          label="Editer"
-                          secondary
-                          onClick={onEditRow.bind(this, patient)}/>
-                        <RaisedButton
-                          label="Supprimer"
-                          primary
-                          onClick={onDeleteRow.bind(this, patient)}/>
-                      </div>
-                    </TableRowColumn>
-                  </TableRow>
+                  <PatientsTableRow
+                    key={index}
+                    patient={patient}
+                    onEditRow={onEditRow}
+                    onDeleteRow={onDeleteRow} />
                 );
               })
             }
