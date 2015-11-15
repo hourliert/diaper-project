@@ -1,5 +1,5 @@
 export function createActionCreator(type, actionCreator, metaCreator) {
-  return function(...args) {
+  return function createAction(...args) {
     return {
       type,
       payload: actionCreator ? actionCreator(...args) : args[0],
@@ -9,7 +9,7 @@ export function createActionCreator(type, actionCreator, metaCreator) {
 }
 
 export function createErrorCreator(type, metaCreator) {
-  return function(errorMessage, ...args) {
+  return function createError(errorMessage, ...args) {
     return {
       type,
       error: true,

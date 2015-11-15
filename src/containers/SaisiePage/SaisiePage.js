@@ -39,7 +39,7 @@ export default class SaisiePage extends Component {
     addPatientDiaper: PropTypes.func.isRequired,
     removePatientDiaper: PropTypes.func.isRequired,
 
-    patients: PropTypes.object.isRequired,
+    patients: PropTypes.array.isRequired,
 
     addPatient: PropTypes.func.isRequired,
     updatePatient: PropTypes.func.isRequired,
@@ -75,7 +75,7 @@ export default class SaisiePage extends Component {
             subtitle="Liste des couches utilisées pour chaque résident"
             avatar={<Avatar>2</Avatar>}/>
           <PatientsTable
-            patients={patients.data}
+            patients={patients}
             onEditRow={setPatient}
             onDeleteRow={
               (patient) => {

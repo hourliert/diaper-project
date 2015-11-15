@@ -3,10 +3,6 @@ import {
   UNSET_PATIENT,
   ADD_PATIENT_DIAPER,
   REMOVE_PATIENT_DIAPER,
-  UPDATE_PATIENT_FIELD,
-  UPDATE_PATIENT_FIELD_ERROR,
-  UPDATE_PATIENT_DIAPER_FIELD,
-  UPDATE_PATIENT_DIAPER_FIELD_ERROR,
 } from '../constants';
 import { createReducer } from './reducerCreator';
 
@@ -18,13 +14,13 @@ export default createReducer({ diapers: [{}] }, {
     };
   },
 
-  [UNSET_PATIENT](state, action) {
+  [UNSET_PATIENT]() {
     return {
       diapers: [{}],
     };
   },
 
-  [ADD_PATIENT_DIAPER](state, action) {
+  [ADD_PATIENT_DIAPER](state) {
     return {
       ...state,
       diapers: [

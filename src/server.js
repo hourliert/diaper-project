@@ -91,9 +91,7 @@ async function handleRender(req, res, next) {
     // `createMemoryHistory`. This is because these functions differ between
     // client and server.
     const initialState = {
-      patients: {
-        data: patients,
-      },
+      patients,
     };
     const store = configureStore(initialState, reduxReactRouter, createMemoryHistory);
 
