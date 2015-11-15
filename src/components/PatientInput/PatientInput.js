@@ -2,14 +2,6 @@ import React, { Component, PropTypes } from 'react';
 
 import PatientForm from '../PatientForm';
 
-const diaperTypes = [
-   { text: 'Couche 1' },
-   { text: 'Couche 2' },
-   { text: 'Couche 3' },
-   { text: 'Couche 4' },
-   { text: 'Couche 5' },
-];
-
 export default class PatientInput extends Component {
   static propTypes = {
     patient: PropTypes.object.isRequired,
@@ -24,32 +16,6 @@ export default class PatientInput extends Component {
 
   constructor(props) {
     super(props);
-  }
-
-  render() {
-    const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onTemporarySave } = this.props;
-
-    const initialValues = this._convertPatientToForm(patient);
-
-    return (
-      <PatientForm
-        fields={Object.keys(initialValues)}
-        initialValues={initialValues}
-        onReset={onReset}
-        onSubmit={
-          (e) => {
-            onSubmit(this._convertFormToPatient(e));
-          }
-        }
-        onTemporarySave={
-          (e) => {
-            onTemporarySave(this._convertFormToPatient(e));
-          }
-        }
-        onAddFields={onAddFields}
-        onRemoveFields={onRemoveFields}
-        />
-    );
   }
 
   _convertPatientToForm(patient) {
@@ -86,4 +52,31 @@ export default class PatientInput extends Component {
       diapers,
     };
   }
+
+  render() {
+    const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onTemporarySave } = this.props;
+
+    const initialValues = this._convertPatientToForm(patient);
+
+    return (
+      <PatientForm
+        fields={Object.keys(initialValues)}
+        initialValues={initialValues}
+        onReset={onReset}
+        onSubmit={
+          (e) => {
+            onSubmit(this._convertFormToPatient(e));
+          }
+        }
+        onTemporarySave={
+          (e) => {
+            onTemporarySave(this._convertFormToPatient(e));
+          }
+        }
+        onAddFields={onAddFields}
+        onRemoveFields={onRemoveFields}
+        />
+    );
+  }
+
 }

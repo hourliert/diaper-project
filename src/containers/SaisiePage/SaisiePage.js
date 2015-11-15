@@ -48,7 +48,7 @@ export default class SaisiePage extends Component {
 
   render() {
     const { patients, updatePatient, addPatient, deletePatient } = this.props;
-    const { temporaryPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
+    const { temporaryPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper } = this.props;
 
     return (
       <CardsList>
