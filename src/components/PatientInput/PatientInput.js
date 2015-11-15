@@ -76,8 +76,7 @@ export default class PatientInput extends Component {
           }
         }
         onAddFields={onAddFields}
-        onRemoveFields={onRemoveFields}
-        />
+        onRemoveFields={onRemoveFields}/>
     );
   }
 

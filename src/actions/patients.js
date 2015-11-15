@@ -16,7 +16,7 @@ import {
 import { SERVER_HOSTNAME, SERVER_PORT } from '../config';
 import { createActionCreator, createErrorCreator } from './actionCreator';
 
-import { setPatient } from './temporaryPatient';
+import { setPatient, unsetPatient } from './temporaryPatient';
 
 async function checkStatus(response) {
   if (response.status < 200 || response.status >= 300) {
@@ -108,6 +108,8 @@ export function addPatient(patient) {
     }
 
     dispatch(addPatientsSuccess(json));
+    dispatch(setPatient(patient));
+    dispatch(unsetPatient());
   };
 }
 
@@ -138,6 +140,6 @@ export function updatePatient(patient) {
     }
 
     dispatch(updatePatientsSuccess(patient));
-    dispatch(setPatient(patient));
+    dispatch(unsetPatient());
   };
 }
