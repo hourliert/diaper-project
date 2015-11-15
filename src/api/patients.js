@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
-import db from '../db/db';
+import { PatientDB } from '../db';
 
 const router = new Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    const patients = await db.getPatients();
+    const patients = await PatientDB.getPatients();
     res.json(patients);
   } catch (err) {
     next(err.message);
@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const patient = await db.createPatient(req.body);
+    const patient = await PatientDB.createPatient(req.body);
     res.json(patient);
   } catch (err) {
     next(err.message);
@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const patient = await db.getPatient(req.params.id);
+    const patient = await PatientDB.getPatient(req.params.id);
 
     if (!patient.length) {
       res.status(404).send('Patient not found.');
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const patient = await db.updatePatient(req.params.id, req.body);
+    const patient = await PatientDB.updatePatient(req.params.id, req.body);
     if (!patient) {
       res.status(404).send('No patient updated.');
     } else {
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const patient = await db.deletePatient(req.params.id);
+    const patient = await PatientDB.deletePatient(req.params.id);
     if (!patient) {
       res.status(404).send('No patient deleted.');
     } else {

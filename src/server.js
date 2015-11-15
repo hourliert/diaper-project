@@ -27,7 +27,7 @@ import configureStore from './store';
 import { SERVER_PORT, SERVER_RENDERING } from './config';
 
 import patientsAPI from './api/patients';
-import db from './db/db';
+import { PatientDB } from './db';
 
 const app = global.server = new Express();
 const port = SERVER_PORT;
@@ -79,7 +79,7 @@ async function handleRender(req, res, next) {
     // the initial counter value.
     let patients = 0;
     try {
-      patients = await db.getPatients();
+      patients = await PatientDB.getPatients();
     } catch (err) {
       console.log(`${err.message}: Error while getting patients`); // eslint-disable-line no-console
     } finally {

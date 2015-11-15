@@ -1,33 +1,8 @@
-import Datastore from 'nedb';
-import { join } from 'path';
+import { DBDriver } from './DBDriver';
 
-class DBDriver {
+class PatientDBDriver extends DBDriver {
   constructor() {
-    this.initDB();
-  }
-
-  async initDB() {
-    this.db = new Datastore({
-      filename: join(__dirname, 'datafile'),
-      autoload: true,
-    });
-    try {
-      await this.setupDB();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  setupDB() {
-    return new Promise((resolve, reject) => {
-      this.db.ensureIndex({ fieldName: 'fullName', unique: true }, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    super('patient', 'fullName');
   }
 
   createPatient(patient) {
@@ -102,4 +77,4 @@ class DBDriver {
   }
 }
 
-export default new DBDriver();
+export default new PatientDBDriver();
