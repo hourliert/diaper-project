@@ -27,7 +27,7 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ExportPage extends Component {
   static propTypes = {
-    patients: PropTypes.object.isRequired,
+    patients: PropTypes.array.isRequired,
 
     fetchPatients: PropTypes.func.isRequired,
   }
@@ -43,7 +43,7 @@ export default class ExportPage extends Component {
             subtitle="Quantités de couches consommées"
             avatar={<Avatar>3</Avatar>}/>
           <DiapersTable
-            patients={patients.data}
+            patients={patients}
             onMount={fetchPatients}/>
         </Card>
         <Card className="padded">

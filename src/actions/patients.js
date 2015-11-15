@@ -18,6 +18,13 @@ import { createActionCreator, createErrorCreator } from './actionCreator';
 
 import { setPatient } from './temporaryPatient';
 
+async function checkStatus(response) {
+  if (response.status < 200 || response.status >= 300) {
+    const text = await response.text();
+    throw new Error(`Error ${response.status}: ${response.statusText} : ${text}`);
+  }
+}
+
 const fetchPatientsRequest = createActionCreator(FETCH_PATIENTS_REQUEST);
 const fetchPatientsFailure = createErrorCreator(FETCH_PATIENTS_FAILURE);
 const fetchPatientsSuccess = createActionCreator(FETCH_PATIENTS_SUCCESS, (json) => ({
@@ -32,9 +39,12 @@ export function fetchPatients() {
     dispatch(fetchPatientsRequest());
     try {
       const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients`);
+
+      await checkStatus(response);
+
       json = await response.json();
     } catch (e) {
-      dispatch(fetchPatientsFailure());
+      dispatch(fetchPatientsFailure(e.message));
       return;
     }
 
@@ -56,9 +66,10 @@ export function deletePatient(id) {
       const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients/${id}`, {
         method: 'delete',
       });
-      await response.text();
+
+      await checkStatus(response);
     } catch (e) {
-      dispatch(deletePatientsFailure());
+      dispatch(deletePatientsFailure(e.message));
       return;
     }
 
@@ -87,9 +98,12 @@ export function addPatient(patient) {
         },
         body: JSON.stringify(patient),
       });
+
+      await checkStatus(response);
+
       json = await response.json();
     } catch (e) {
-      dispatch(addPatientsFailure());
+      dispatch(addPatientsFailure(e.message));
       return;
     }
 
@@ -116,9 +130,10 @@ export function updatePatient(patient) {
         },
         body: JSON.stringify(patient),
       });
-      await response.text();
+
+      await checkStatus(response);
     } catch (e) {
-      dispatch(updatePatientsFailure());
+      dispatch(updatePatientsFailure(e.message));
       return;
     }
 
