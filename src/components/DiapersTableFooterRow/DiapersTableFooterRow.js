@@ -14,8 +14,11 @@ export default class DiapersTableFooterRow extends Component {
   }
 
   _handleMutliplierChange(e) {
+    const { target: { value } } = e;
+
     this.setState({
-      multiplier: e.target.value,
+      multiplier: value,
+      multiplierError: isNaN(parseInt(value, 10)) ? 'Non entier' : '',
     });
   }
 
@@ -31,6 +34,7 @@ export default class DiapersTableFooterRow extends Component {
             <TextField
               className="flex-1"
               value={this.state.multiplier}
+              errorText={this.state.multiplierError}
               hintText="Nombre"
               floatingLabelText="Multiplieur"
               onChange={this._handleMutliplierChange.bind(this)}/>

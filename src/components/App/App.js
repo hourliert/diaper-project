@@ -45,7 +45,7 @@ export default class App extends Component {
         {children}
         <Snackbar
           ref="snackbar"
-          message={error}/>
+          message={error || ''}/>
       </div>
     );
   }
