@@ -1,2 +1,2 @@
 export * from './patients';
-export * from './patientForm';
+export * from './temporaryPatient';

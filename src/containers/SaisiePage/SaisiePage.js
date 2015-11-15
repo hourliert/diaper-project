@@ -8,12 +8,12 @@ import PatientsTable from '../../components/PatientsTable';
 import PatientInput from '../../components/PatientInput';
 
 import * as PatientsAction from '../../actions/patients';
-import * as PatientFormAction from '../../actions/patientForm';
+import * as TemporaryPatientAction from '../../actions/temporaryPatient';
 
 function mapStateToProps(state) {
   return {
     patients: state.patients,
-    patientForm: state.patientForm,
+    temporaryPatient: state.temporaryPatient,
   };
 }
 
@@ -24,7 +24,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     ...PatientsAction,
-    ...PatientFormAction,
+    ...TemporaryPatientAction,
   }, dispatch);
 }
 
@@ -32,14 +32,12 @@ function mapDispatchToProps(dispatch) {
 export default class SaisiePage extends Component {
 
   static propTypes = {
-    patientForm: PropTypes.object.isRequired,
+    temporaryPatient: PropTypes.object.isRequired,
 
     setPatient: PropTypes.func.isRequired,
     unsetPatient: PropTypes.func.isRequired,
     addPatientDiaper: PropTypes.func.isRequired,
     removePatientDiaper: PropTypes.func.isRequired,
-    updatePatientField: PropTypes.func.isRequired,
-    updatePatientDiaperField: PropTypes.func.isRequired,
 
     patients: PropTypes.object.isRequired,
 
@@ -50,7 +48,7 @@ export default class SaisiePage extends Component {
 
   render() {
     const { patients, updatePatient, addPatient, deletePatient } = this.props;
-    const { patientForm, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
+    const { temporaryPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper, updatePatientField, updatePatientDiaperField } = this.props;
 
     return (
       <CardsList>
@@ -60,25 +58,16 @@ export default class SaisiePage extends Component {
             subtitle="Entrer un nouveau resident"
             avatar={<Avatar>1</Avatar>}/>
           <PatientInput
-            patient={patientForm}
+            patient={temporaryPatient}
             onSubmit={
               (patient) => {
                 (patient._id ? updatePatient : addPatient)(patient);
               }
             }
             onReset={unsetPatient}
+            onTemporarySave={setPatient}
             onAddFields={addPatientDiaper}
-            onRemoveFields={(removePatientDiaper)}
-            onFieldChange={
-              (field, e) => {
-                updatePatientField(field, e.target.value);
-              }
-            }
-            onDiaperChange={
-              (index, field, e) => {
-                updatePatientDiaperField(index, field, e.target.value);
-              }
-            } />
+            onRemoveFields={removePatientDiaper} />
         </Card>
         <Card>
           <CardHeader

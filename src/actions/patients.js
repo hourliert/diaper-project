@@ -16,7 +16,7 @@ import {
 import { SERVER_HOSTNAME, SERVER_PORT } from '../config';
 import { createActionCreator, createErrorCreator } from './actionCreator';
 
-import { setPatient } from './patientForm';
+import { setPatient } from './temporaryPatient';
 
 const fetchPatientsRequest = createActionCreator(FETCH_PATIENTS_REQUEST);
 const fetchPatientsFailure = createErrorCreator(FETCH_PATIENTS_FAILURE);

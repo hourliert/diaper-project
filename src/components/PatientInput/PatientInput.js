@@ -16,15 +16,40 @@ export default class PatientInput extends Component {
 
     onSubmit: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
+    onTemporarySave: PropTypes.func.isRequired,
 
     onAddFields: PropTypes.func.isRequired,
     onRemoveFields: PropTypes.func.isRequired,
-    onFieldChange: PropTypes.func.isRequired,
-    onDiaperChange: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
+  }
+
+  render() {
+    const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onTemporarySave } = this.props;
+
+    const initialValues = this._convertPatientToForm(patient);
+
+    return (
+      <PatientForm
+        fields={Object.keys(initialValues)}
+        initialValues={initialValues}
+        onReset={onReset}
+        onSubmit={
+          (e) => {
+            onSubmit(this._convertFormToPatient(e));
+          }
+        }
+        onTemporarySave={
+          (e) => {
+            onTemporarySave(this._convertFormToPatient(e));
+          }
+        }
+        onAddFields={onAddFields}
+        onRemoveFields={onRemoveFields}
+        />
+    );
   }
 
   _convertPatientToForm(patient) {
@@ -60,25 +85,5 @@ export default class PatientInput extends Component {
       lastName,
       diapers,
     };
-  }
-
-  render() {
-    const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onFieldChange, onDiaperChange} = this.props;
-
-    const initialValues = this._convertPatientToForm(patient);
-
-    return (
-      <PatientForm
-        fields={Object.keys(initialValues)}
-        initialValues={initialValues}
-        onAddFields={onAddFields}
-        onRemoveFields={onRemoveFields}
-        onReset={onReset}
-        onSubmit={
-          (e) => {
-            this._convertFormToPatient(e);
-          }
-        }/>
-    );
   }
 }

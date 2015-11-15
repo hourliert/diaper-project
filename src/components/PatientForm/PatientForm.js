@@ -19,11 +19,17 @@ const diaperTypes = [
 })
 export default class PatientForm extends Component {
   static propTypes = {
-    fields: PropTypes.object.isRequired,
-    onReset: PropTypes.func.isRequired,
-
-    handleSubmit: PropTypes.func.isRequired,
+    // redux-form properties
+    fields: PropTypes.array.isRequired,
+    initialValues: PropTypes.object.isRequired,
     resetForm: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired, // internally calls props.onSubmit
+
+    onReset: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    onTemporarySave: PropTypes.func.isRequired,
+    onAddFields: PropTypes.func.isRequired,
+    onRemoveFields: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -32,7 +38,7 @@ export default class PatientForm extends Component {
 
   render() {
     const { fields: {firstName, lastName, ...diapers }, handleSubmit, resetForm } = this.props;
-    const { onReset, onAddFields } = this.props;
+    const { onReset, onAddFields, onTemporarySave } = this.props;
 
     return (
       <form
@@ -41,7 +47,7 @@ export default class PatientForm extends Component {
         onReset={
           (...args) => {
             resetForm(args);
-            onReset(args);
+            onReset();
           }
         }>
         <TextField
@@ -63,7 +69,12 @@ export default class PatientForm extends Component {
           <FloatingActionButton
             mini
             className="fab-button"
-            onClick={onAddFields}>
+            onClick={
+              (e) => {
+                onTemporarySave(this.props.values);
+                onAddFields();
+              }
+            }>
             <i className="material-icons">add_circle_outline</i>
           </FloatingActionButton>
         </div>
@@ -79,7 +90,7 @@ export default class PatientForm extends Component {
   }
 
   _createDiaperFields(diaperFields) {
-    const { onRemoveFields } = this.props;
+    const { onRemoveFields, onTemporarySave } = this.props;
     const fields = [];
     const keys = Object.keys(diaperFields);
 
@@ -105,7 +116,12 @@ export default class PatientForm extends Component {
            <div>
              <FloatingActionButton
                mini
-               onClick={onRemoveFields.bind(this, i / 2)}>
+               onClick={
+                 (e) => {
+                   onTemporarySave(this.props.values);
+                   onRemoveFields(i / 2);
+                 }
+               }>
                <i className="material-icons">remove_circle_outline</i>
              </FloatingActionButton>
            </div>
