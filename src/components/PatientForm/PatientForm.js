@@ -19,14 +19,14 @@ const diaperTypes = [
 export default class PatientForm extends Component {
   static propTypes = {
     // redux-form properties
-    fields: PropTypes.array.isRequired,
-    initialValues: PropTypes.object.isRequired,
+    fields: PropTypes.object.isRequired,
+    initialValues: PropTypes.object,
     values: PropTypes.object.isRequired,
     resetForm: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired, // internally calls props.onSubmit
 
     onReset: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     onTemporarySave: PropTypes.func.isRequired,
     onAddFields: PropTypes.func.isRequired,
     onRemoveFields: PropTypes.func.isRequired,
@@ -38,42 +38,45 @@ export default class PatientForm extends Component {
 
   _createDiaperFields(diaperFields) {
     const { onRemoveFields, onTemporarySave } = this.props;
-    const fields = [];
     const keys = Object.keys(diaperFields);
+    const fields = [];
 
-    const removeFieldHandler = (i) => {
+    function removeFieldHandler(i) {
       onTemporarySave(this.props.values);
-      onRemoveFields(i / 2);
-    };
+      onRemoveFields(i);
+    }
 
     for (let i = 0, ii = keys.length; i < ii; i += 2) {
+      const index = i / 2;
+      const diaperTypeField = keys[i];
+      const diaperAmountField = keys[i + 1];
+
       fields.push(
-       <div key={i / 2} className="layout horizontal">
-         <SelectField
-           {...diaperFields[keys[i]]}
-           value={this.props.values[keys[i]]}
-           errorText={diaperFields[keys[i]].error}
-           hintText="Type de couche"
-           valueMember="text"
-           displayMember="text"
-           menuItems={diaperTypes}/>
+        <div key={index} className="layout horizontal">
+          <SelectField
+            hintText="Type de couche"
+            errorText={diaperFields[diaperTypeField].error}
+            valueMember="text"
+            displayMember="text"
+            menuItems={diaperTypes}
+            {...diaperFields[diaperTypeField]}
+            value={this.props.values[diaperTypeField]}/>
 
-         <TextField
-           type="text"
-           hintText="Quantité"
-           errorText={diaperFields[keys[i + 1]].error}
-           {...diaperFields[keys[i + 1]]}/>
+          <TextField
+            type="text"
+            hintText="Quantité"
+            errorText={diaperFields[diaperAmountField].error}
+            {...diaperFields[diaperAmountField]}/>
 
-         {(i / 2) > 0 ?
-           <div>
-             <FloatingActionButton
-               mini
-               onClick={removeFieldHandler.bind(this, i)}>
-               <i className="material-icons">remove_circle_outline</i>
-             </FloatingActionButton>
-           </div>
-         : null}
-
+          {(index) > 0 ?
+            <div>
+              <FloatingActionButton
+                mini
+                onClick={removeFieldHandler.bind(this, index)}>
+                <i className="material-icons">remove_circle_outline</i>
+              </FloatingActionButton>
+            </div>
+          : null}
        </div>
       );
     }
@@ -91,20 +94,20 @@ export default class PatientForm extends Component {
         onSubmit={handleSubmit}
         onReset={
           (...args) => {
-            resetForm(args);
+            resetForm(...args);
             onReset();
           }
         }>
         <TextField
           type="text"
           hintText="Prénom"
-          {...firstName}
-          errorText={firstName.error}/>
+          errorText={firstName.error}
+          {...firstName}/>
         <TextField
           type="text"
           hintText="Nom"
-          {...lastName}
-          errorText={lastName.error}/>
+          errorText={lastName.error}
+          {...lastName}/>
 
         <div className="layout vertical">
           {this._createDiaperFields(diapers)}
