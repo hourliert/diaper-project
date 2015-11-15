@@ -28,12 +28,10 @@ function mapDispatchToProps(dispatch) {
 export default class ExportPage extends Component {
   static propTypes = {
     patients: PropTypes.array.isRequired,
-
-    fetchPatients: PropTypes.func.isRequired,
   }
 
   render() {
-    const { patients, fetchPatients } = this.props;
+    const { patients } = this.props;
 
     return (
       <CardsList>
@@ -43,8 +41,7 @@ export default class ExportPage extends Component {
             subtitle="Quantités de couches consommées"
             avatar={<Avatar>3</Avatar>}/>
           <DiapersTable
-            patients={patients}
-            onMount={fetchPatients}/>
+            patients={patients}/>
         </Card>
         <Card className="padded">
           <CardHeader

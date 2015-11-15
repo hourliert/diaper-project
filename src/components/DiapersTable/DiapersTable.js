@@ -8,7 +8,6 @@ import DiapersTableFooterRow from '../DiapersTableFooterRow';
 export default class DiapersTable extends Component {
   static propTypes = {
     patients: PropTypes.array.isRequired,
-    onMount: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -16,10 +15,6 @@ export default class DiapersTable extends Component {
     this.state = {
       multiplier: '1',
     };
-  }
-
-  componentWillMount() {
-    this.props.onMount();
   }
 
   _formatDiapers(patients) {
