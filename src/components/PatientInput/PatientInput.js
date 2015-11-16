@@ -37,7 +37,7 @@ export default class PatientInput extends Component {
   }
 
   _convertFormToPatient(form) {
-    const { patient: { _id } } = this.props;
+    const { patient: { id } } = this.props;
     const { firstName, lastName, ...splitedDiapers } = form;
     const diaperKeys = Object.keys(splitedDiapers);
     const diapers = [];
@@ -50,7 +50,7 @@ export default class PatientInput extends Component {
     }
 
     return {
-      _id,
+      id,
       firstName,
       lastName,
       diapers,

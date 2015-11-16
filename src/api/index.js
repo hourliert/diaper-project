@@ -1,4 +1,4 @@
-export { default as patientsApi } from './patientsSqlite';
-export { default as diaperTypesApi } from './diaperTypesSqlite';
+export { default as patientsApi } from './patients';
+export { default as diaperTypesApi } from './diaperTypes';
 
 // export * from './patients';

@@ -120,11 +120,11 @@ const updatePatientsSuccess = createActionCreator(UPDATE_PATIENT_SUCCESS, (json)
   receivedAt: Date.now(),
 }));
 
-export function updatePatient(patient) {
+export function updatePatient(id, patient) {
   return async (dispatch) => {
     dispatch(updatePatientsRequest());
     try {
-      const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients/${patient._id}`, {
+      const response = await fetch(`http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/patients/${id}`, {
         method: 'put',
         headers: {
           Accept: 'application/json',

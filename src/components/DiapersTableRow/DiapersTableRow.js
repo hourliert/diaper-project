@@ -19,6 +19,7 @@ export default class DiapersTableRow extends Component {
         res = diaper.amount;
       }
     });
+    console.log(res);
     return res;
   }
 
@@ -32,6 +33,7 @@ export default class DiapersTableRow extends Component {
         </TableRowColumn>
         {
           diapersTypes.map((diaperType, dIndex) => {
+            console.log(diaperType);
             const diaperAmount = this._findDiaperForType(patient, diaperType);
 
             return (
