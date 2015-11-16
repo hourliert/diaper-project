@@ -16,9 +16,10 @@ import cors from 'cors';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { reduxReactRouter, match } from 'redux-router/server';
-import {ReduxRouter} from 'redux-router';
+import { ReduxRouter } from 'redux-router';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import fetch from 'isomorphic-fetch';
 
 import Html from './helpers/Html';
 
@@ -26,8 +27,8 @@ import configureStore from './store';
 
 import { SERVER_PORT, SERVER_RENDERING } from './config';
 
-import patientsAPI from './api/patients';
-import { PatientDB } from './db';
+import { patientsApi, diaperTypesApi } from './api';
+import db from './db';
 
 const app = global.server = new Express();
 const port = SERVER_PORT;
@@ -77,13 +78,24 @@ async function handleRender(req, res, next) {
     // `fetchCounter` is a fake API described in `./api/counter.js`.
     // The first thing to do before rendering the app is to ask the API for
     // the initial counter value.
-    let patients = 0;
+    let patients;
     try {
-      patients = await PatientDB.getPatients();
+      const response = await fetch('http://localhost:5000/api/patients');
+      patients = await response.json();
     } catch (err) {
       console.log(`${err.message}: Error while getting patients`); // eslint-disable-line no-console
     } finally {
       patients = patients || {};
+    }
+
+    let diaperTypes;
+    try {
+      const response = await fetch('http://localhost:5000/api/diaperTypes');
+      diaperTypes = await response.json();
+    } catch (err) {
+      console.log(`${err.message}: Error while getting diaperTypes`); // eslint-disable-line no-console
+    } finally {
+      diaperTypes = diaperTypes || {};
     }
 
     // The server must have a reference to the redux application store.
@@ -92,6 +104,7 @@ async function handleRender(req, res, next) {
     // client and server.
     const initialState = {
       patients,
+      diaperTypes,
     };
     const store = configureStore(initialState, reduxReactRouter, createMemoryHistory);
 
@@ -133,7 +146,8 @@ async function handleRender(req, res, next) {
 
 app.set('port', (process.env.PORT || port));
 app.use('/client', Express.static(path.join(__dirname, './client')));
-app.use('/api/patients', cors(), patientsAPI);
+app.use('/api/patients', cors(), patientsApi);
+app.use('/api/diaperTypes', cors(), diaperTypesApi);
 if (SERVER_RENDERING) {
   app.use(handleRender);
 } else {
@@ -143,10 +157,13 @@ if (SERVER_RENDERING) {
   });
 }
 
-app.listen(port, (error) => {
-  if (error) {
-    console.err(error); // eslint-disable-line no-console
-  } else {
-    console.log(`==> 🌎  The server is running on port ${port}.`); // eslint-disable-line no-console
-  }
+db.sync().then(() => {
+  console.log('DB started.'); // eslint-disable-line no-console
+  app.listen(port, (error) => {
+    if (error) {
+      console.err(error); // eslint-disable-line no-console
+    } else {
+      console.log(`==> 🌎  The server is running on port ${port}.`); // eslint-disable-line no-console
+    }
+  });
 });

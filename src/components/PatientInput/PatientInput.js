@@ -6,6 +6,8 @@ export default class PatientInput extends Component {
   static propTypes = {
     patient: PropTypes.object.isRequired,
 
+    diaperTypes: PropTypes.array.isRequired,
+
     onSubmit: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     onTemporarySave: PropTypes.func.isRequired,
@@ -56,7 +58,7 @@ export default class PatientInput extends Component {
   }
 
   render() {
-    const { patient, onSubmit, onReset, onAddFields, onRemoveFields, onTemporarySave } = this.props;
+    const { patient, diaperTypes, onSubmit, onReset, onAddFields, onRemoveFields, onTemporarySave } = this.props;
 
     const initialValues = this._convertPatientToForm(patient);
 
@@ -64,6 +66,7 @@ export default class PatientInput extends Component {
       <PatientForm
         fields={Object.keys(initialValues)}
         initialValues={initialValues}
+        diaperTypes={diaperTypes}
         onReset={onReset}
         onSubmit={
           (e) => {

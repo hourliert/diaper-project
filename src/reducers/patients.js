@@ -15,7 +15,7 @@ export default createReducer([], {
 
   [DELETE_PATIENT_SUCCESS](state, action) {
     return state.filter(patient =>
-      patient._id !== action.payload.deletedId
+      patient.id !== action.payload.deletedId
     );
   },
 
@@ -28,7 +28,7 @@ export default createReducer([], {
 
   [UPDATE_PATIENT_SUCCESS](state, action) {
     return state.map(patient => {
-      return (patient._id === action.payload.patient._id) ?
+      return (patient.id === action.payload.patient.id) ?
         action.payload.patient :
         patient;
     });

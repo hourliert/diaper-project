@@ -8,6 +8,7 @@ import DiapersTableFooterRow from '../DiapersTableFooterRow';
 export default class DiapersTable extends Component {
   static propTypes = {
     patients: PropTypes.array.isRequired,
+    diaperTypes: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -18,11 +19,15 @@ export default class DiapersTable extends Component {
   }
 
   _formatDiapers(patients) {
+    const { diaperTypes } = this.props;
     const diapers = {};
     patients.forEach((patient) => {
       patient.diapers.forEach((diaper) => {
-        diapers[diaper.type] = diapers[diaper.type] || 0;
-        diapers[diaper.type] += parseInt(diaper.amount, 10);
+        const key = diaperTypes.filter((diaperType) => {
+          return diaperType.id === diaper.type;
+        })[0].value;
+        diapers[key] = diapers[key] || 0;
+        diapers[key] += parseInt(diaper.amount, 10);
       });
     });
     return diapers;

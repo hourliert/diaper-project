@@ -11,6 +11,7 @@ import * as PatientsAction from '../../actions/patients';
 function mapStateToProps(state) {
   return {
     patients: state.patients,
+    diaperTypes: state.diaperTypes,
   };
 }
 
@@ -28,10 +29,11 @@ function mapDispatchToProps(dispatch) {
 export default class ExportPage extends Component {
   static propTypes = {
     patients: PropTypes.array.isRequired,
+    diaperTypes: PropTypes.array.isRequired,
   }
 
   render() {
-    const { patients } = this.props;
+    const { patients, diaperTypes } = this.props;
 
     return (
       <CardsList>
@@ -41,7 +43,8 @@ export default class ExportPage extends Component {
             subtitle="Quantités de couches consommées"
             avatar={<Avatar>3</Avatar>}/>
           <DiapersTable
-            patients={patients}/>
+            patients={patients}
+            diaperTypes={diaperTypes}/>
         </Card>
         <Card className="padded">
           <CardHeader

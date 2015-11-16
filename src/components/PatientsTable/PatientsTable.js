@@ -7,6 +7,7 @@ import PatientsTableRow from '../PatientsTableRow';
 export default class PatientsTable extends Component {
   static propTypes = {
     patients: PropTypes.array.isRequired,
+    diaperTypes: PropTypes.array.isRequired,
 
     onEditRow: PropTypes.func.isRequired,
     onDeleteRow: PropTypes.func.isRequired,
@@ -17,7 +18,7 @@ export default class PatientsTable extends Component {
   }
 
   render() {
-    const { patients, onEditRow, onDeleteRow } = this.props;
+    const { patients, diaperTypes, onEditRow, onDeleteRow } = this.props;
 
     return (
       <Table
@@ -39,6 +40,7 @@ export default class PatientsTable extends Component {
                 <PatientsTableRow
                   key={index}
                   patient={patient}
+                  diaperTypes={diaperTypes}
                   onEditRow={onEditRow}
                   onDeleteRow={onDeleteRow} />
               );

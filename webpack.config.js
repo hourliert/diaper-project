@@ -174,6 +174,10 @@ const serverConfig = Object.assign({}, commonConfig, {
     libraryTarget: 'commonjs2',
   },
   target: 'node',
+  externals: {
+    sqlite3: 'commonjs sqlite3',
+    sequelize: 'commonjs sequelize',
+  },
   node: {
     console: false,
     global: false,

@@ -13,6 +13,7 @@ import * as TemporaryPatientAction from '../../actions/temporaryPatient';
 function mapStateToProps(state) {
   return {
     patients: state.patients,
+    diaperTypes: state.diaperTypes,
     temporaryPatient: state.temporaryPatient,
   };
 }
@@ -41,14 +42,18 @@ export default class SaisiePage extends Component {
 
     patients: PropTypes.array.isRequired,
 
+    fetchPatients: PropTypes.func.isRequired,
     addPatient: PropTypes.func.isRequired,
     updatePatient: PropTypes.func.isRequired,
     deletePatient: PropTypes.func.isRequired,
+
+    diaperTypes: PropTypes.array.isRequired,
   }
 
   render() {
-    const { patients, updatePatient, addPatient, deletePatient } = this.props;
+    const { patients, fetchPatients, updatePatient, addPatient, deletePatient } = this.props;
     const { temporaryPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper } = this.props;
+    const { diaperTypes } = this.props;
 
     return (
       <CardsList>
@@ -59,9 +64,10 @@ export default class SaisiePage extends Component {
             avatar={<Avatar>1</Avatar>}/>
           <PatientInput
             patient={temporaryPatient}
+            diaperTypes={diaperTypes}
             onSubmit={
               (patient) => {
-                (patient._id ? updatePatient : addPatient)(patient);
+                (patient.id ? updatePatient : addPatient)(patient);
               }
             }
             onReset={unsetPatient}
@@ -74,12 +80,14 @@ export default class SaisiePage extends Component {
             title="Visualisation"
             subtitle="Liste des couches utilisées pour chaque résident"
             avatar={<Avatar>2</Avatar>}/>
+          <button onClick={fetchPatients}>Fetch</button>
           <PatientsTable
             patients={patients}
+            diaperTypes={diaperTypes}
             onEditRow={setPatient}
             onDeleteRow={
               (patient) => {
-                deletePatient(patient._id);
+                deletePatient(patient.id);
               }
             }/>
         </Card>

@@ -4,14 +4,6 @@ import { reduxForm } from 'redux-form';
 
 import validate from './validationRules';
 
-const diaperTypes = [
-   { text: 'Couche 1' },
-   { text: 'Couche 2' },
-   { text: 'Couche 3' },
-   { text: 'Couche 4' },
-   { text: 'Couche 5' },
-];
-
 @reduxForm({
   form: 'patient',
   validate,
@@ -25,6 +17,7 @@ export default class PatientForm extends Component {
     resetForm: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired, // internally calls props.onSubmit
 
+    diaperTypes: PropTypes.array.isRequired,
     onReset: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onTemporarySave: PropTypes.func.isRequired,
@@ -37,7 +30,7 @@ export default class PatientForm extends Component {
   }
 
   _createDiaperFields(diaperFields) {
-    const { onRemoveFields, onTemporarySave } = this.props;
+    const { diaperTypes, onRemoveFields, onTemporarySave } = this.props;
     const keys = Object.keys(diaperFields);
     const fields = [];
 
@@ -56,8 +49,8 @@ export default class PatientForm extends Component {
           <SelectField
             hintText="Type de couche"
             errorText={diaperFields[diaperTypeField].error}
-            valueMember="text"
-            displayMember="text"
+            valueMember="id"
+            displayMember="value"
             menuItems={diaperTypes}
             {...diaperFields[diaperTypeField]}
             value={this.props.values[diaperTypeField]}/>

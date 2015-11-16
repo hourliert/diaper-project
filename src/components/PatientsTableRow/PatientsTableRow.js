@@ -5,6 +5,7 @@ export default class PatientsTableRow extends Component {
   static propTypes = {
     striped: PropTypes.any,
     patient: PropTypes.object.isRequired,
+    diaperTypes: PropTypes.array.isRequired,
     onEditRow: PropTypes.func.isRequired,
     onDeleteRow: PropTypes.func.isRequired,
   };
@@ -14,7 +15,7 @@ export default class PatientsTableRow extends Component {
   }
 
   render() {
-    const { striped, patient, onEditRow, onDeleteRow } = this.props;
+    const { striped, patient, diaperTypes, onEditRow, onDeleteRow } = this.props;
 
     return (
       <TableRow striped={striped}>
@@ -25,7 +26,13 @@ export default class PatientsTableRow extends Component {
             {
               patient.diapers.map((diaper, indexDiaper) => {
                 return (
-                  <li key={indexDiaper}>{diaper.type}</li>
+                  <li key={indexDiaper}>
+                    {
+                      diaperTypes.filter((diaperType) => {
+                        return diaperType.id === diaper.type;
+                      })[0].value
+                    }
+                  </li>
                 );
               })
             }
