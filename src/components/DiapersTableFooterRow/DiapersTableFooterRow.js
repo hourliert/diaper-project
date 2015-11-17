@@ -3,7 +3,7 @@ import { TextField, TableRow, TableRowColumn } from 'material-ui';
 
 export default class DiapersTableFooterRow extends Component {
   static propTypes = {
-    diapers: PropTypes.object.isRequired,
+    selectedDiapers: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -23,8 +23,8 @@ export default class DiapersTableFooterRow extends Component {
   }
 
   render() {
-    const { diapers } = this.props;
-    const diapersHeader = Object.keys(diapers);
+    const { selectedDiapers } = this.props;
+    const selectedDiaperIds = Object.keys(selectedDiapers);
 
     return (
       <TableRow>
@@ -41,8 +41,8 @@ export default class DiapersTableFooterRow extends Component {
           </div>
         </TableRowColumn>
         {
-          diapersHeader.map((header, index) => {
-            const total = (parseInt(this.state.multiplier, 10) || 1) * parseInt(diapers[header], 10);
+          selectedDiaperIds.map((diaperId, index) => {
+            const total = (parseInt(this.state.multiplier, 10) || 1) * parseInt(selectedDiapers[diaperId], 10);
 
             return (
               <TableRowColumn key={index}>

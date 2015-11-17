@@ -67,7 +67,11 @@ export default class SaisiePage extends Component {
             diaperTypes={diaperTypes}
             onSubmit={
               (patient) => {
-                (patient.id ? updatePatient : addPatient)(patient.id, patient);
+                if (patient.id) {
+                  updatePatient(patient.id, patient);
+                } else {
+                  addPatient(patient);
+                }
               }
             }
             onReset={unsetPatient}

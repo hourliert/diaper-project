@@ -19,24 +19,20 @@ export default class DiapersTable extends Component {
   }
 
   _formatDiapers(patients) {
-    const { diaperTypes } = this.props;
     const diapers = {};
     patients.forEach((patient) => {
       patient.diapers.forEach((diaper) => {
-        const key = diaperTypes.filter((diaperType) => {
-          return diaperType.id === diaper.type;
-        })[0].value;
-        diapers[key] = diapers[key] || 0;
-        diapers[key] += parseInt(diaper.amount, 10);
+        diapers[diaper.type] = diapers[diaper.type] || 0;
+        diapers[diaper.type] += parseInt(diaper.amount, 10);
       });
     });
     return diapers;
   }
 
   render() {
-    const { patients } = this.props;
-    const diapers = this._formatDiapers(patients);
-    const diapersHeader = Object.keys(diapers);
+    const { patients, diaperTypes } = this.props;
+    const selectedDiapers = this._formatDiapers(patients);
+    const selectedDiaperIds = Object.keys(selectedDiapers);
 
     return (
       <Table
@@ -47,7 +43,11 @@ export default class DiapersTable extends Component {
           adjustForCheckbox={false}>
           <TableHeaderLabelsList
             headers={
-              ['Résident'].concat(diapersHeader)
+              ['Résident'].concat(selectedDiaperIds.map(id => {
+                return diaperTypes.filter(diaper => {
+                  return diaper.id === parseInt(id, 10);
+                })[0].value;
+              }))
             }/>
         </TableHeader>
 
@@ -60,7 +60,7 @@ export default class DiapersTable extends Component {
                 <DiapersTableRow
                   key={index}
                   patient={patient}
-                  diapersTypes={diapersHeader} />
+                  selectedDiaperIds={selectedDiaperIds} />
               );
             })
           }
@@ -69,7 +69,7 @@ export default class DiapersTable extends Component {
         <TableFooter
           adjustForCheckbox={false}>
           <DiapersTableFooterRow
-            diapers={diapers}/>
+            selectedDiapers={selectedDiapers}/>
         </TableFooter>
       </Table>
     );

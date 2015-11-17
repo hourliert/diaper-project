@@ -5,26 +5,25 @@ export default class DiapersTableRow extends Component {
   static propTypes = {
     striped: PropTypes.any,
     patient: PropTypes.object.isRequired,
-    diapersTypes: PropTypes.array.isRequired,
+    selectedDiaperIds: PropTypes.array.isRequired,
   };
 
   constructor(props) {
     super(props);
   }
 
-  _findDiaperForType(patient, diaperType) {
+  _findDiaperForType(patient, id) {
     let res = 0;
     patient.diapers.forEach((diaper) => {
-      if (diaper.type === diaperType) {
+      if (diaper.type === parseInt(id, 10)) {
         res = diaper.amount;
       }
     });
-    console.log(res);
     return res;
   }
 
   render() {
-    const { striped, patient, diapersTypes } = this.props;
+    const { striped, patient, selectedDiaperIds } = this.props;
 
     return (
       <TableRow striped={striped}>
@@ -32,9 +31,8 @@ export default class DiapersTableRow extends Component {
           {patient.firstName} {patient.lastName}
         </TableRowColumn>
         {
-          diapersTypes.map((diaperType, dIndex) => {
-            console.log(diaperType);
-            const diaperAmount = this._findDiaperForType(patient, diaperType);
+          selectedDiaperIds.map((id, dIndex) => {
+            const diaperAmount = this._findDiaperForType(patient, id);
 
             return (
               <TableRowColumn
