@@ -42,7 +42,6 @@ export default class SaisiePage extends Component {
 
     patients: PropTypes.array.isRequired,
 
-    fetchPatients: PropTypes.func.isRequired,
     addPatient: PropTypes.func.isRequired,
     updatePatient: PropTypes.func.isRequired,
     deletePatient: PropTypes.func.isRequired,
@@ -51,7 +50,7 @@ export default class SaisiePage extends Component {
   }
 
   render() {
-    const { patients, fetchPatients, updatePatient, addPatient, deletePatient } = this.props;
+    const { patients, updatePatient, addPatient, deletePatient } = this.props;
     const { temporaryPatient, setPatient, unsetPatient, addPatientDiaper, removePatientDiaper } = this.props;
     const { diaperTypes } = this.props;
 
@@ -84,7 +83,6 @@ export default class SaisiePage extends Component {
             title="Visualisation"
             subtitle="Liste des couches utilisées pour chaque résident"
             avatar={<Avatar>2</Avatar>}/>
-          <button onClick={fetchPatients}>Fetch</button>
           <PatientsTable
             patients={patients}
             diaperTypes={diaperTypes}
