@@ -13,9 +13,6 @@ export default class DiapersTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      multiplier: '1',
-    };
   }
 
   _formatDiapers(patients) {
