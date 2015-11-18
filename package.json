@@ -1,14 +1,14 @@
 {
-  "name": "react-boilerplate",
-  "version": "0.0.0",
-  "description": "Yet Another React Boilerplate.",
+  "name": "projet-couche",
+  "version": "1.0.0",
+  "description": "WebApp de gestion du stock de couches des résidents.",
   "engines": {
     "node": ">=4.1 <5",
     "npm": ">=3.1 <4"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hourliert/react-seed.git"
+    "url": "git+https://git.cnode.fr/hourliert/projet-couche.git"
   },
   "keywords": [
     "react",
@@ -17,9 +17,9 @@
   "author": "Thomas Hourlier <hourliert@gmail.com> (https://github.com/hourliert)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hourliert/react-seed/issues"
+    "url": "https://git.cnode.fr/hourliert/projet-couche/issues"
   },
-  "homepage": "https://github.com/hourliert/react-seed#readme",
+  "homepage": "https://git.cnode.fr/hourliert/projet-couche#readme",
   "jest": {
     "verbose": true,
     "rootDir": "./src",
