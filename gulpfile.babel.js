@@ -7,6 +7,7 @@ import { clean } from './tasks/clean';
 import { lintWithEslint, lintWithJscs } from './tasks/lint';
 import { test, coverage } from './tasks/test';
 import { cssLint, cssFix } from './tasks/css';
+import { inc } from './tasks/version';
 
 gulp.task('clean', clean);
 
@@ -26,3 +27,7 @@ gulp.task('coverage', coverage);
 
 gulp.task('csslint', cssLint);
 gulp.task('cssfix', cssFix);
+
+gulp.task('patch', inc.bind(this, 'patch'));
+gulp.task('feature', inc.bind(this, 'minor'));
+gulp.task('release', inc.bind(this, 'major'));
