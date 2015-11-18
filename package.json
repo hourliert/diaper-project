@@ -1,6 +1,6 @@
 {
   "name": "projet-couche",
-  "version": "1.0.1",
+  "version": "1.0.1-server",
   "description": "WebApp de gestion du stock de couches des résidents.",
   "engines": {
     "node": ">=4.1 <5",
